@@ -1,10 +1,10 @@
-## Status
-
-Work in progress: repository will be updated according my progress with LFS book.
-
 ## Description
 
 This repository contains docker configuration to build LFS system (8.1).
+
+## Status
+
+Work in progress: repository will be updated according my progress with LFS book.
 
 ## Prerequesites
 
