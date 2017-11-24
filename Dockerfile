@@ -47,6 +47,12 @@ USER lfs
 COPY [ "scripts/.bash_profile", "scripts/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
 
+# must be defined as ENV to be accessible by RUN commands
+ENV LC_ALL=POSIX \
+  LFS_TGT=x86_64-lfs-linux-gnu \
+  PATH=/tools/bin:/bin:/usr/bin \
+  MAKEFLAGS="-j $PROC"
+
 # compile binutils
 COPY [ "toolchain/binutils-*.tar.bz2", "$LFS/sources/" ]
 RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
