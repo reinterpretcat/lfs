@@ -257,3 +257,9 @@ RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && ln -sv gcc /tools/bin/cc \
  && popd \
  && rm -rf /tmp/gcc
+
+ # perform a sanity check
+RUN echo 'int main(){}' > dummy.c \
+ && cc dummy.c \
+ && readelf -l a.out | grep ': /tools' \
+ && rm -v dummy.c a.out
