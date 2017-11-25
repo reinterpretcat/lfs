@@ -263,3 +263,19 @@ RUN echo 'int main(){}' > dummy.c \
  && cc dummy.c \
  && readelf -l a.out | grep ': /tools' \
  && rm -v dummy.c a.out
+
+ # compile TCL-core package which contains the Tool Command Language
+COPY [ "toolchain/tcl-core*-src.tar.gz", "$LFS/sources/" ]
+RUN tar -xf tcl-core*-src.tar.gz -C /tmp/ \
+ && mv /tmp/tcl* /tmp/tcl-core \
+ && pushd /tmp/tcl-core \
+ && cd unix \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then TZ=UTC make test; fi \
+ && make install \
+ && chmod -v u+w /tools/lib/libtcl8.6.so \
+ && make install-private-headers \
+ && ln -sv tclsh8.6 /tools/bin/tclsh \
+ && popd \
+ && rm -rf /tmp/tcl-core
