@@ -508,3 +508,110 @@ RUN tar -xf make-*.tar.bz2 -C /tmp/ \
  && make install \
  && popd \
  && rm -rf /tmp/make
+
+# compile patch package which contains a program for modifying or
+# creating files by applying a “patch” file typically created by
+# the diff program
+COPY [ "toolchain/patch-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf patch-*.tar.xz -C /tmp/ \
+ && mv /tmp/patch-* /tmp/patch \
+ && pushd /tmp/patch \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/patch
+
+# compile perl package which contains the Practical Extraction
+# and Report Language
+COPY [ "toolchain/perl-5*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf perl-5*.tar.xz -C /tmp/ \
+ && mv /tmp/perl-* /tmp/perl \
+ && pushd /tmp/perl \
+ && sed -e '9751 a#ifndef PERL_IN_XSUB_RE' \
+        -e '9808 a#endif' \
+        -i regexec.c \
+ && sh Configure -des -Dprefix=/tools -Dlibs=-lm \
+ && make \
+ && cp -v perl cpan/podlators/scripts/pod2man /tools/bin \
+ && mkdir -pv /tools/lib/perl5/5.26.0 \
+ && cp -Rv lib/* /tools/lib/perl5/5.26.0 \
+ && popd \
+ && rm -rf /tmp/perl
+
+# compile sed package which contains a stream editor
+COPY [ "toolchain/sed-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf sed-*.tar.xz -C /tmp/ \
+ && mv /tmp/sed-* /tmp/sed \
+ && pushd /tmp/sed \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check || true; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/sed
+
+# compile tar package which contains an archiving program
+COPY [ "toolchain/tar-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf tar-*.tar.xz -C /tmp/ \
+ && mv /tmp/tar-* /tmp/tar \
+ && pushd /tmp/tar \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/tar || true
+
+# compile texinfo package which contains programs for reading,
+# writing, and converting info pages.
+COPY [ "toolchain/texinfo-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf texinfo-*.tar.xz -C /tmp/ \
+ && mv /tmp/texinfo-* /tmp/texinfo \
+ && pushd /tmp/texinfo \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/texinfo
+
+# compile util-linux package which contains miscellaneous utility programs
+COPY [ "toolchain/util-linux-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf util-linux-*.tar.xz -C /tmp/ \
+ && mv /tmp/util-linux-* /tmp/util-linux \
+ && pushd /tmp/util-linux \
+ && ./configure --prefix=/tools     \
+     --without-python               \
+     --disable-makeinstall-chown    \
+     --without-systemdsystemunitdir \
+     --without-ncurses              \
+     PKG_CONFIG=""                  \
+&& make \
+&& make install \
+&& popd \
+&& rm -rf /tmp/util-linux
+
+# compile xz package which contains programs for compressing and
+# decompressing files
+COPY [ "toolchain/xz-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf xz-*.tar.xz -C /tmp/ \
+ && mv /tmp/xz-* /tmp/xz \
+ && pushd /tmp/xz \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/xz
+
+# stripping unneeded files to reduce LFS size
+RUN strip --strip-debug /tools/lib/* || true
+RUN /usr/bin/strip --strip-unneeded /tools/{,s}bin/* || true
+RUN rm -rf /tools/{,share}/{info,man,doc}
+
+# change ownership
+USER root
+# NOTE root:root returns an error
+RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
