@@ -1,6 +1,10 @@
 FROM debian:8
 CMD ["/bin/bash"]
 
+# GNU make --jobs parameter which specifies
+# maximum number of jobs can be run in parallel
+ARG JOB_COUNT=1
+
 # set variables
 ENV LFS=/mnt/lfs
 
@@ -51,9 +55,10 @@ RUN source ~/.bash_profile
 ENV LC_ALL=POSIX \
   LFS_TGT=x86_64-lfs-linux-gnu \
   PATH=/tools/bin:/bin:/usr/bin \
-  MAKEFLAGS="-j $PROC"
+  MAKEFLAGS="-j $JOB_COUNT"
 
-# compile binutils
+# compile binutils package which contains a linker, an assembler,
+# and other tools for handling object files
 COPY [ "toolchain/binutils-*.tar.bz2", "$LFS/sources/" ]
 RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
  && mv /tmp/binutils-* /tmp/binutils \
@@ -74,7 +79,8 @@ RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
  && popd \
  && rm -rf /tmp/binutils
 
-# compile gcc
+# Pass 1: compile GCC package which contains the GNU compiler collection,
+# including the C and C++ compilers
 COPY [ "toolchain/gcc-*.tar.xz", "toolchain/mpfr-*.tar.xz", "toolchain/gmp-*.tar.xz", "toolchain/mpc-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && mv /tmp/gcc-* /tmp/gcc \
@@ -123,4 +129,43 @@ RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && make \
  && make install \
  && popd \
- && rm -rf /tmp/gcc-*
+ && rm -rf /tmp/gcc
+
+# compile Linux API headers which expose the kernel's API
+# for use by Glibc
+COPY [ "toolchain/linux-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf linux-*.tar.xz -C /tmp/ \
+ && mv /tmp/linux-* /tmp/linux \
+ && pushd /tmp/linux \
+ && make mrproper \
+ && make INSTALL_HDR_PATH=dest headers_install \
+ && cp -rv dest/include/* /tools/include \
+ && popd \
+ && rm -rf /tmp/linux
+
+# compile Glibc which contains the main C library
+COPY [ "toolchain/glibc-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf glibc-*.tar.xz -C /tmp/ \
+ && mv /tmp/glibc-* /tmp/glibc \
+ && pushd /tmp/glibc \
+ && mkdir -v build \
+ && cd build \
+ && ../configure                       \
+    --prefix=/tools                    \
+    --host=$LFS_TGT                    \
+    --build=$(../scripts/config.guess) \
+    --enable-kernel=3.2                \
+    --with-headers=/tools/include      \
+    libc_cv_forced_unwind=yes          \
+    libc_cv_c_cleanup=yes              \
+&& make \
+&& make install \
+&& popd \
+&& rm -rf /tmp/glibc
+
+# perform a sanity check that basic functions (compiling and linking)
+# are working as expected
+RUN echo 'int main(){}' > dummy.c \
+ && $LFS_TGT-gcc dummy.c \
+ && readelf -l a.out | grep ': /tools' \
+ && rm -v dummy.c a.out
