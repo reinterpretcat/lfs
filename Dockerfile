@@ -279,3 +279,20 @@ RUN tar -xf tcl-core*-src.tar.gz -C /tmp/ \
  && ln -sv tclsh8.6 /tools/bin/tclsh \
  && popd \
  && rm -rf /tmp/tcl-core
+
+# compile expect package package which contains a program
+# for carrying out scripted dialogues with other interactive programs
+COPY [ "toolchain/expect*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf expect*.tar.gz -C /tmp/ \
+ && mv /tmp/expect* /tmp/expect \
+ && pushd /tmp/expect \
+ && cp -v configure{,.orig} \
+ && sed 's:/usr/local/bin:/bin:' configure.orig > configure \
+ && ./configure --prefix=/tools        \
+      --with-tcl=/tools/lib            \
+      --with-tclinclude=/tools/include \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make test; fi \
+ && make SCRIPTS="" install \
+ && popd \
+ && rm -rf /tmp/expect
