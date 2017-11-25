@@ -615,3 +615,23 @@ RUN rm -rf /tools/{,share}/{info,man,doc}
 USER root
 # NOTE root:root returns an error
 RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
+
+
+### Building the LFS System ###
+
+# prepare Virtual Kernel File Systems
+RUN mkdir -pv $LFS/{dev,proc,sys,run}
+
+# create Initial Device Nodes
+RUN mknod -m 600 $LFS/dev/console c 5 1
+RUN mknod -m 666 $LFS/dev/null c 1 3
+
+# mount and populate /dev
+RUN mount -v --bind /dev $LFS/dev
+
+# mount Virtual Kernel File Systems
+RUN mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
+RUN mount -vt proc proc $LFS/proc
+RUN mount -vt sysfs sysfs $LFS/sys
+RUN mount -vt tmpfs tmpfs $LFS/run
+RUN if [ -h $LFS/dev/shm ]; then mkdir -pv $LFS/$(readlink $LFS/dev/shm) fi
