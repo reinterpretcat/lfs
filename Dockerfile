@@ -4,6 +4,9 @@ CMD ["/bin/bash"]
 # GNU make --jobs parameter which specifies
 # maximum number of jobs can be run in parallel
 ARG JOB_COUNT=1
+# sets flag whether test suites for some packages
+# should be run
+ARG LFS_TEST=1
 
 # set variables
 ENV LFS=/mnt/lfs
@@ -296,3 +299,212 @@ RUN tar -xf expect*.tar.gz -C /tmp/ \
  && make SCRIPTS="" install \
  && popd \
  && rm -rf /tmp/expect
+
+# compile DejaGNU which contains a framework for testing other programs
+COPY [ "toolchain/dejagnu-*.tar.gz", "$LFS/sources/" ]
+RUN  tar -xf dejagnu-*.tar.gz -C /tmp/ \
+ && mv /tmp/dejagnu-* /tmp/dejagnu \
+ && pushd /tmp/dejagnu \
+ && ./configure --prefix=/tools \
+ && make install \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && popd \
+ && rm -rf /tmp/dejagnu
+
+ # compile check package which is a unit testing framework for C.
+COPY [ "toolchain/check-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf check-*.tar.gz -C /tmp/ \
+ && mv /tmp/check-* /tmp/check \
+ && pushd /tmp/check \
+ && PKG_CONFIG= ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/check
+
+# compile ncurses packages which contains libraries
+# for terminal-independent handling of character screens
+COPY [ "toolchain/ncurses-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf ncurses-*.tar.gz -C /tmp/ \
+ && mv /tmp/ncurses-* /tmp/ncurses \
+ && pushd /tmp/ncurses \
+ && sed -i s/mawk// configure \
+ && ./configure          \
+      --prefix=/tools    \
+      --with-shared      \
+      --without-debug    \
+      --without-ada      \
+      --enable-widec     \
+      --enable-overwrite \
+ && make \
+ && make install \
+ && popd \
+ && rm -rf /tmp/ncurses
+
+ # compile bash package which contains the Bourne-Again SHell
+COPY [ "toolchain/bash-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf bash-*.tar.gz -C /tmp/ \
+ && mv /tmp/bash-* /tmp/bash \
+ && pushd /tmp/bash \
+ && ./configure --prefix=/tools --without-bash-malloc \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make tests; fi \
+ && make install \
+ && ln -sv bash /tools/bin/sh \
+ && popd \
+ && rm -rf /tmp/bash
+
+ # compile Bison package which contains a parser generator
+COPY [ "toolchain/bison-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf bison-*.tar.xz -C /tmp/ \
+ && mv /tmp/bison-* /tmp/bison \
+ && pushd /tmp/bison \
+ && ./configure --prefix=/tools \
+ && make \
+ && make install \
+ && popd \
+ && rm -rf /tmp/bison
+
+# compile bzip2 package which contains programs for
+# compressing and decompressing files.
+COPY [ "toolchain/bzip2-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf bzip2-*.tar.gz -C /tmp/ \
+ && mv /tmp/bzip2-* /tmp/bzip2 \
+ && pushd /tmp/bzip2 \
+ && make \
+ && make PREFIX=/tools install \
+ && popd \
+ && rm -rf /tmp/bzip2
+
+# compile coreutils package which contains utilities
+# for showing and setting the basic system characteristics
+# NOTE: has failed tests
+# NOTE: has workaround for deletion directiories with long name
+COPY [ "toolchain/coreutils-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf coreutils-*.tar.xz -C /tmp/ \
+ && mv /tmp/coreutils-* /tmp/coreutils \
+ && pushd /tmp/coreutils \
+ && ./configure --prefix=/tools --enable-install-program=hostname \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make RUN_EXPENSIVE_TESTS=yes check || true; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/coreutils || true
+
+# compile diffutils package which contains programs that
+# show the differences between files or directories
+COPY [ "toolchain/diffutils-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf diffutils-*.tar.xz -C /tmp/ \
+ && mv /tmp/diffutils-* /tmp/diffutils \
+ && pushd /tmp/diffutils \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/diffutils
+
+# compile file package which contains a utility for determining
+# the type of a given file or files
+COPY [ "toolchain/file-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf file-*.tar.gz -C /tmp/ \
+ && mv /tmp/file-* /tmp/file \
+ && pushd /tmp/file \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/file
+
+# compile findutils package contains programs to find files
+COPY [ "toolchain/findutils-*.tar.gz", "$LFS/sources/" ]
+RUN tar -xf findutils-*.tar.gz -C /tmp/ \
+ && mv /tmp/findutils-* /tmp/findutils \
+ && pushd /tmp/findutils \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi || true \
+ && make install \
+ && popd \
+ && rm -rf /tmp/findutils || true
+
+# compile gawk package which contains programs for manipulating text files
+COPY [ "toolchain/gawk-*.tar.xz", "$LFS/sources/" ]
+RUN  tar -xf gawk-*.tar.xz -C /tmp/ \
+ && mv /tmp/gawk-* /tmp/gawk \
+ && pushd /tmp/gawk \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check || true; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/gawk
+
+# compile gettext package which contains utilities for
+# internationalization and localization
+COPY [ "toolchain/gettext-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf gettext-*.tar.xz -C /tmp/ \
+ && mv /tmp/gettext-* /tmp/gettext \
+ && pushd /tmp/gettext \
+ && cd gettext-tools \
+ && EMACS="no" ./configure --prefix=/tools --disable-shared \
+ && make -C gnulib-lib \
+ && make -C intl pluralx.c \
+ && make -C src msgfmt \
+ && make -C src msgmerge \
+ && make -C src xgettext \
+ && cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin \
+ && popd \
+ && rm -rf /tmp/gettext
+
+# compile grep which package contains programs for
+# searching through files
+COPY [ "toolchain/grep-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf grep-*.tar.xz -C /tmp/ \
+ && mv /tmp/grep-* /tmp/grep \
+ && pushd /tmp/grep \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/grep
+
+# compile gzip package which contains programs for
+# compressing and decompressing files
+COPY [ "toolchain/gzip-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf gzip-*.tar.xz -C /tmp/ \
+ && mv /tmp/gzip-* /tmp/gzip \
+ && pushd /tmp/gzip \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check || true; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/gzip
+
+# compile m4 package which contains a macro processor
+COPY [ "toolchain/m4-*.tar.xz", "$LFS/sources/" ]
+RUN tar -xf m4-*.tar.xz -C /tmp/ \
+ && mv /tmp/m4-* /tmp/m4 \
+ && pushd /tmp/m4 \
+ && ./configure --prefix=/tools \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/m4
+
+# compile make package which contains a program for compiling packages
+COPY [ "toolchain/make-*.tar.bz2", "$LFS/sources/" ]
+RUN tar -xf make-*.tar.bz2 -C /tmp/ \
+ && mv /tmp/make-* /tmp/make \
+ && pushd /tmp/make \
+ && ./configure --prefix=/tools --without-guile \
+ && make \
+ && if [ $LFS_TEST -eq 1 ]; then make check; fi \
+ && make install \
+ && popd \
+ && rm -rf /tmp/make
