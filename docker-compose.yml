@@ -1,6 +1,7 @@
 version: '2'
 services:
   lfs:
+    privileged: true
     build:
       context: .
       dockerfile: Dockerfile

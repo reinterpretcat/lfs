@@ -1,12 +1,16 @@
 FROM debian:8
-CMD ["/bin/bash"]
 
-# GNU make --jobs parameter which specifies
-# maximum number of jobs can be run in parallel
+LABEL description="automated LFS build"
+LABEL version="8.1"
+LABEL maintainer="ilya.builuk@gmail.com"
+
+# GNU make --jobs parameter which specifies maximum number
+# of jobs can be run in parallel
 ARG JOB_COUNT=1
-# sets flag whether test suites for some packages
-# should be run
+# sets flag whether test suites for some packages should be run
 ARG LFS_TEST=1
+
+### Prepare the build ###
 
 # set variables
 ENV LFS=/mnt/lfs
@@ -36,7 +40,7 @@ RUN mkdir -pv $LFS/tools \
  && ln -sv $LFS/tools /
 
 # check environment
-COPY [ "scripts/version-check.sh", "scripts/library-check.sh", "$LFS/sources/" ]
+COPY [ "scripts/prepare/version-check.sh", "scripts/prepare/library-check.sh", "$LFS/sources/" ]
 RUN chmod -v 755 *.sh && sync \
  && ./version-check.sh && ./library-check.sh
 
@@ -51,7 +55,7 @@ RUN chown -v lfs $LFS/tools \
 
  # login as lfs user and set up environment
 USER lfs
-COPY [ "scripts/.bash_profile", "scripts/.bashrc", "/home/lfs/" ]
+COPY [ "scripts/prepare/.bash_profile", "scripts/prepare/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
 
 # must be defined as ENV to be accessible by RUN commands
@@ -616,22 +620,7 @@ USER root
 # NOTE root:root returns an error
 RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
 
-
 ### Building the LFS System ###
-
-# prepare Virtual Kernel File Systems
-RUN mkdir -pv $LFS/{dev,proc,sys,run}
-
-# create Initial Device Nodes
-RUN mknod -m 600 $LFS/dev/console c 5 1
-RUN mknod -m 666 $LFS/dev/null c 1 3
-
-# mount and populate /dev
-RUN mount -v --bind /dev $LFS/dev
-
-# mount Virtual Kernel File Systems
-RUN mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620
-RUN mount -vt proc proc $LFS/proc
-RUN mount -vt sysfs sysfs $LFS/sys
-RUN mount -vt tmpfs tmpfs $LFS/run
-RUN if [ -h $LFS/dev/shm ]; then mkdir -pv $LFS/$(readlink $LFS/dev/shm) fi
+# run actual building lfs when container starts
+COPY [ "scripts/build/run-build.sh", "scripts/build/as-chroot.sh", "~" ]
+ENTRYPOINT [ "~/run-build.sh" ]
