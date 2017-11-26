@@ -85,11 +85,11 @@ nogroup:x:99:
 users:x:999:
 EOF
 
-# remove the “I have no name!” prompt,
-exec /tools/bin/bash --login +h
-
 # initialize the log files and give them proper permissions
 touch /var/log/{btmp,lastlog,faillog,wtmp}
 chgrp -v utmp /var/log/lastlog
 chmod -v 664 /var/log/lastlog
 chmod -v 600 /var/log/btmp
+
+# remove the "I have no name!" prompt and continue with building basic tools
+exec /tools/bin/bash --login +h ./tools/basic-tools.sh

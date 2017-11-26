@@ -252,7 +252,7 @@ RUN tar -xf gcc-*.tar.xz -C /tmp/ \
     CXX=$LFS_TGT-g++       \
     AR=$LFS_TGT-ar         \
     RANLIB=$LFS_TGT-ranlib \
- && ../configure                                     \
+    ../configure                                     \
       --prefix=/tools                                \
       --with-local-prefix=/tools                     \
       --with-native-system-header-dir=/tools/include \
@@ -599,8 +599,8 @@ RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
 
 ### Building the LFS System ###
 # run actual building lfs when container starts
-COPY [ "scripts/build/run-build.sh", "scripts/build/as-chroot.sh", "$LFS/tools/" ]
-RUN echo `pwd`
+COPY [ "scripts/build/run-build.sh", "scripts/build/as-chroot.sh", "scripts/build/basic-tools.sh", "$LFS/tools/" ]
 RUN chmod +x ../tools/run-build.sh
 RUN chmod +x ../tools/as-chroot.sh
+RUN chmod +x ../tools/basic-tools.sh
 ENTRYPOINT [ "../tools/run-build.sh" ]
