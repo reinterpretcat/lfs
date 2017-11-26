@@ -1,6 +1,7 @@
 FROM debian:8
 
-LABEL description="automated LFS build"
+# Image info
+LABEL description="Automated LFS build"
 LABEL version="8.1"
 LABEL maintainer="ilya.builuk@gmail.com"
 
@@ -22,29 +23,35 @@ RUN rm sh && ln -s bash sh
 # install required packages
 RUN apt-get update && apt-get install -y \
     build-essential \
-    bison \
-    file \
-    gawk \
-    texinfo \
-    wget \
+    bison           \
+    file            \
+    gawk            \
+    texinfo         \
+    wget            \
  && apt-get -q -y autoremove \
  && rm -rf /var/lib/apt/lists/*
 
- # create sources directory as writable and sticky
- RUN mkdir -pv $LFS/sources \
-  && chmod -v a+wt $LFS/sources
- WORKDIR $LFS/sources
+# create sources directory as writable and sticky
+RUN mkdir -pv $LFS/sources \
+ && chmod -v a+wt $LFS/sources
+WORKDIR $LFS/sources
 
 # create tools directory and symlink
 RUN mkdir -pv $LFS/tools \
  && ln -sv $LFS/tools /
 
+# download toolchain
+RUN wget --quiet --timestamping http://www.linuxfromscratch.org/lfs/view/8.1-systemd/wget-list
+RUN wget --quiet --timestamping --directory-prefix=$LFS/sources --continue --input-file=wget-list
+
 # check environment
 COPY [ "scripts/prepare/version-check.sh", "scripts/prepare/library-check.sh", "$LFS/sources/" ]
-RUN chmod -v 755 *.sh && sync \
- && ./version-check.sh && ./library-check.sh
+RUN chmod -v 755 *.sh  \
+ && sync               \
+ && ./version-check.sh \
+ && ./library-check.sh
 
- # create lfs user with 'lfs' password
+# create lfs user with 'lfs' password
 RUN groupadd lfs \
  && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
  && echo "lfs:lfs" | chpasswd
@@ -66,7 +73,6 @@ ENV LC_ALL=POSIX \
 
 # compile binutils package which contains a linker, an assembler,
 # and other tools for handling object files
-COPY [ "toolchain/binutils-*.tar.bz2", "$LFS/sources/" ]
 RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
  && mv /tmp/binutils-* /tmp/binutils \
  && pushd /tmp/binutils \
@@ -88,7 +94,6 @@ RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
 
 # Pass 1: compile GCC package which contains the GNU compiler collection,
 # including the C and C++ compilers
-COPY [ "toolchain/gcc-*.tar.xz", "toolchain/mpfr-*.tar.xz", "toolchain/gmp-*.tar.xz", "toolchain/mpc-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && mv /tmp/gcc-* /tmp/gcc \
  && pushd /tmp/gcc \
@@ -140,7 +145,6 @@ RUN tar -xf gcc-*.tar.xz -C /tmp/ \
 
 # compile Linux API headers which expose the kernel's API
 # for use by Glibc
-COPY [ "toolchain/linux-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf linux-*.tar.xz -C /tmp/ \
  && mv /tmp/linux-* /tmp/linux \
  && pushd /tmp/linux \
@@ -151,7 +155,6 @@ RUN tar -xf linux-*.tar.xz -C /tmp/ \
  && rm -rf /tmp/linux
 
 # compile Glibc which contains the main C library
-COPY [ "toolchain/glibc-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf glibc-*.tar.xz -C /tmp/ \
  && mv /tmp/glibc-* /tmp/glibc \
  && pushd /tmp/glibc \
@@ -179,7 +182,6 @@ RUN echo 'int main(){}' > dummy.c \
 
 # compile libstdc++ which is standard C++ library,
 # needed for the correct operation of the g++ compiler
-COPY [ "toolchain/gcc-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && mv /tmp/gcc-* /tmp/gcc \
  && pushd /tmp/gcc \
@@ -221,7 +223,7 @@ RUN tar -xf binutils-*.tar.bz2 -C /tmp/ \
  && popd \
  && rm -rf /tmp/binutils
 
- # Pass 2: compile GCC package
+# Pass 2: compile GCC package
 RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && mv /tmp/gcc-* /tmp/gcc \
  && pushd /tmp/gcc \
@@ -265,14 +267,13 @@ RUN tar -xf gcc-*.tar.xz -C /tmp/ \
  && popd \
  && rm -rf /tmp/gcc
 
- # perform a sanity check
+# perform a sanity check
 RUN echo 'int main(){}' > dummy.c \
  && cc dummy.c \
  && readelf -l a.out | grep ': /tools' \
  && rm -v dummy.c a.out
 
- # compile TCL-core package which contains the Tool Command Language
-COPY [ "toolchain/tcl-core*-src.tar.gz", "$LFS/sources/" ]
+# compile TCL-core package which contains the Tool Command Language
 RUN tar -xf tcl-core*-src.tar.gz -C /tmp/ \
  && mv /tmp/tcl* /tmp/tcl-core \
  && pushd /tmp/tcl-core \
@@ -289,7 +290,6 @@ RUN tar -xf tcl-core*-src.tar.gz -C /tmp/ \
 
 # compile expect package package which contains a program
 # for carrying out scripted dialogues with other interactive programs
-COPY [ "toolchain/expect*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf expect*.tar.gz -C /tmp/ \
  && mv /tmp/expect* /tmp/expect \
  && pushd /tmp/expect \
@@ -305,7 +305,6 @@ RUN tar -xf expect*.tar.gz -C /tmp/ \
  && rm -rf /tmp/expect
 
 # compile DejaGNU which contains a framework for testing other programs
-COPY [ "toolchain/dejagnu-*.tar.gz", "$LFS/sources/" ]
 RUN  tar -xf dejagnu-*.tar.gz -C /tmp/ \
  && mv /tmp/dejagnu-* /tmp/dejagnu \
  && pushd /tmp/dejagnu \
@@ -315,8 +314,7 @@ RUN  tar -xf dejagnu-*.tar.gz -C /tmp/ \
  && popd \
  && rm -rf /tmp/dejagnu
 
- # compile check package which is a unit testing framework for C.
-COPY [ "toolchain/check-*.tar.gz", "$LFS/sources/" ]
+# compile check package which is a unit testing framework for C.
 RUN tar -xf check-*.tar.gz -C /tmp/ \
  && mv /tmp/check-* /tmp/check \
  && pushd /tmp/check \
@@ -329,7 +327,6 @@ RUN tar -xf check-*.tar.gz -C /tmp/ \
 
 # compile ncurses packages which contains libraries
 # for terminal-independent handling of character screens
-COPY [ "toolchain/ncurses-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf ncurses-*.tar.gz -C /tmp/ \
  && mv /tmp/ncurses-* /tmp/ncurses \
  && pushd /tmp/ncurses \
@@ -346,8 +343,7 @@ RUN tar -xf ncurses-*.tar.gz -C /tmp/ \
  && popd \
  && rm -rf /tmp/ncurses
 
- # compile bash package which contains the Bourne-Again SHell
-COPY [ "toolchain/bash-*.tar.gz", "$LFS/sources/" ]
+# compile bash package which contains the Bourne-Again SHell
 RUN tar -xf bash-*.tar.gz -C /tmp/ \
  && mv /tmp/bash-* /tmp/bash \
  && pushd /tmp/bash \
@@ -359,8 +355,7 @@ RUN tar -xf bash-*.tar.gz -C /tmp/ \
  && popd \
  && rm -rf /tmp/bash
 
- # compile Bison package which contains a parser generator
-COPY [ "toolchain/bison-*.tar.xz", "$LFS/sources/" ]
+# compile Bison package which contains a parser generator
 RUN tar -xf bison-*.tar.xz -C /tmp/ \
  && mv /tmp/bison-* /tmp/bison \
  && pushd /tmp/bison \
@@ -372,7 +367,6 @@ RUN tar -xf bison-*.tar.xz -C /tmp/ \
 
 # compile bzip2 package which contains programs for
 # compressing and decompressing files.
-COPY [ "toolchain/bzip2-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf bzip2-*.tar.gz -C /tmp/ \
  && mv /tmp/bzip2-* /tmp/bzip2 \
  && pushd /tmp/bzip2 \
@@ -385,7 +379,6 @@ RUN tar -xf bzip2-*.tar.gz -C /tmp/ \
 # for showing and setting the basic system characteristics
 # NOTE: has failed tests
 # NOTE: has workaround for deletion directiories with long name
-COPY [ "toolchain/coreutils-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf coreutils-*.tar.xz -C /tmp/ \
  && mv /tmp/coreutils-* /tmp/coreutils \
  && pushd /tmp/coreutils \
@@ -398,7 +391,6 @@ RUN tar -xf coreutils-*.tar.xz -C /tmp/ \
 
 # compile diffutils package which contains programs that
 # show the differences between files or directories
-COPY [ "toolchain/diffutils-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf diffutils-*.tar.xz -C /tmp/ \
  && mv /tmp/diffutils-* /tmp/diffutils \
  && pushd /tmp/diffutils \
@@ -411,7 +403,6 @@ RUN tar -xf diffutils-*.tar.xz -C /tmp/ \
 
 # compile file package which contains a utility for determining
 # the type of a given file or files
-COPY [ "toolchain/file-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf file-*.tar.gz -C /tmp/ \
  && mv /tmp/file-* /tmp/file \
  && pushd /tmp/file \
@@ -423,7 +414,6 @@ RUN tar -xf file-*.tar.gz -C /tmp/ \
  && rm -rf /tmp/file
 
 # compile findutils package contains programs to find files
-COPY [ "toolchain/findutils-*.tar.gz", "$LFS/sources/" ]
 RUN tar -xf findutils-*.tar.gz -C /tmp/ \
  && mv /tmp/findutils-* /tmp/findutils \
  && pushd /tmp/findutils \
@@ -435,7 +425,6 @@ RUN tar -xf findutils-*.tar.gz -C /tmp/ \
  && rm -rf /tmp/findutils || true
 
 # compile gawk package which contains programs for manipulating text files
-COPY [ "toolchain/gawk-*.tar.xz", "$LFS/sources/" ]
 RUN  tar -xf gawk-*.tar.xz -C /tmp/ \
  && mv /tmp/gawk-* /tmp/gawk \
  && pushd /tmp/gawk \
@@ -448,7 +437,6 @@ RUN  tar -xf gawk-*.tar.xz -C /tmp/ \
 
 # compile gettext package which contains utilities for
 # internationalization and localization
-COPY [ "toolchain/gettext-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf gettext-*.tar.xz -C /tmp/ \
  && mv /tmp/gettext-* /tmp/gettext \
  && pushd /tmp/gettext \
@@ -465,7 +453,6 @@ RUN tar -xf gettext-*.tar.xz -C /tmp/ \
 
 # compile grep which package contains programs for
 # searching through files
-COPY [ "toolchain/grep-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf grep-*.tar.xz -C /tmp/ \
  && mv /tmp/grep-* /tmp/grep \
  && pushd /tmp/grep \
@@ -478,7 +465,6 @@ RUN tar -xf grep-*.tar.xz -C /tmp/ \
 
 # compile gzip package which contains programs for
 # compressing and decompressing files
-COPY [ "toolchain/gzip-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf gzip-*.tar.xz -C /tmp/ \
  && mv /tmp/gzip-* /tmp/gzip \
  && pushd /tmp/gzip \
@@ -490,7 +476,6 @@ RUN tar -xf gzip-*.tar.xz -C /tmp/ \
  && rm -rf /tmp/gzip
 
 # compile m4 package which contains a macro processor
-COPY [ "toolchain/m4-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf m4-*.tar.xz -C /tmp/ \
  && mv /tmp/m4-* /tmp/m4 \
  && pushd /tmp/m4 \
@@ -502,7 +487,6 @@ RUN tar -xf m4-*.tar.xz -C /tmp/ \
  && rm -rf /tmp/m4
 
 # compile make package which contains a program for compiling packages
-COPY [ "toolchain/make-*.tar.bz2", "$LFS/sources/" ]
 RUN tar -xf make-*.tar.bz2 -C /tmp/ \
  && mv /tmp/make-* /tmp/make \
  && pushd /tmp/make \
@@ -516,7 +500,6 @@ RUN tar -xf make-*.tar.bz2 -C /tmp/ \
 # compile patch package which contains a program for modifying or
 # creating files by applying a “patch” file typically created by
 # the diff program
-COPY [ "toolchain/patch-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf patch-*.tar.xz -C /tmp/ \
  && mv /tmp/patch-* /tmp/patch \
  && pushd /tmp/patch \
@@ -529,7 +512,6 @@ RUN tar -xf patch-*.tar.xz -C /tmp/ \
 
 # compile perl package which contains the Practical Extraction
 # and Report Language
-COPY [ "toolchain/perl-5*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf perl-5*.tar.xz -C /tmp/ \
  && mv /tmp/perl-* /tmp/perl \
  && pushd /tmp/perl \
@@ -545,7 +527,6 @@ RUN tar -xf perl-5*.tar.xz -C /tmp/ \
  && rm -rf /tmp/perl
 
 # compile sed package which contains a stream editor
-COPY [ "toolchain/sed-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf sed-*.tar.xz -C /tmp/ \
  && mv /tmp/sed-* /tmp/sed \
  && pushd /tmp/sed \
@@ -557,7 +538,6 @@ RUN tar -xf sed-*.tar.xz -C /tmp/ \
  && rm -rf /tmp/sed
 
 # compile tar package which contains an archiving program
-COPY [ "toolchain/tar-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf tar-*.tar.xz -C /tmp/ \
  && mv /tmp/tar-* /tmp/tar \
  && pushd /tmp/tar \
@@ -570,7 +550,6 @@ RUN tar -xf tar-*.tar.xz -C /tmp/ \
 
 # compile texinfo package which contains programs for reading,
 # writing, and converting info pages.
-COPY [ "toolchain/texinfo-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf texinfo-*.tar.xz -C /tmp/ \
  && mv /tmp/texinfo-* /tmp/texinfo \
  && pushd /tmp/texinfo \
@@ -582,7 +561,6 @@ RUN tar -xf texinfo-*.tar.xz -C /tmp/ \
  && rm -rf /tmp/texinfo
 
 # compile util-linux package which contains miscellaneous utility programs
-COPY [ "toolchain/util-linux-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf util-linux-*.tar.xz -C /tmp/ \
  && mv /tmp/util-linux-* /tmp/util-linux \
  && pushd /tmp/util-linux \
@@ -599,7 +577,6 @@ RUN tar -xf util-linux-*.tar.xz -C /tmp/ \
 
 # compile xz package which contains programs for compressing and
 # decompressing files
-COPY [ "toolchain/xz-*.tar.xz", "$LFS/sources/" ]
 RUN tar -xf xz-*.tar.xz -C /tmp/ \
  && mv /tmp/xz-* /tmp/xz \
  && pushd /tmp/xz \
@@ -622,5 +599,8 @@ RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
 
 ### Building the LFS System ###
 # run actual building lfs when container starts
-COPY [ "scripts/build/run-build.sh", "scripts/build/as-chroot.sh", "~" ]
-ENTRYPOINT [ "~/run-build.sh" ]
+COPY [ "scripts/build/run-build.sh", "scripts/build/as-chroot.sh", "$LFS/tools/" ]
+RUN echo `pwd`
+RUN chmod +x ../tools/run-build.sh
+RUN chmod +x ../tools/as-chroot.sh
+ENTRYPOINT [ "../tools/run-build.sh" ]

@@ -20,6 +20,8 @@ if [ -h $LFS/dev/shm ]; then
   mkdir -pv $LFS/$(readlink $LFS/dev/shm)
 fi
 
+echo `pwd`
+
 # enter and continue in chroot environment
 chroot "$LFS" /tools/bin/env -i \
   HOME=/root                    \
@@ -27,4 +29,4 @@ chroot "$LFS" /tools/bin/env -i \
   PS1='\u:\w\$ '                \
   PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
   /tools/bin/bash --login +h \
-  -c "./as-chroot.sh"
+  -c "/tools/as-chroot.sh"
