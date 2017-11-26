@@ -54,7 +54,7 @@ CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
   libc_cv_slibdir=/lib
 unset GCC_INCDIR
 make
-#make check || true
+make check || true
 # prevent warning during install
 touch /etc/ld.so.conf
 # fix the generated Makefile to skip an uneeded sanity check that fails in the LFS partial environment
@@ -257,3 +257,26 @@ sed -i -e '/flex/s/as_fn_error/: ;; # &/' configure
   && make install \
   && popd \
   && rm -rf /tmp/bc
+
+
+# 6.16. Binutils package contains a linker, an assembler, and other tools
+# for handling object files
+tar -xf sources/binutils-*.tar.bz2 -C /tmp/ \
+  && mv /tmp/binutils-* /tmp/binutils \
+  && pushd /tmp/binutils
+# verify that the PTYs are working properly inside the chroot environment
+expect -c "spawn ls"
+mkdir -v build \
+  && cd build \
+  && ../configure --prefix=/usr \
+       --enable-gold           \
+       --enable-ld=default     \
+       --enable-plugins        \
+       --enable-shared         \
+       --disable-werror        \
+       --with-system-zlib      \
+  && make tooldir=/usr         \
+  && make -k check  || true    \
+  && make tooldir=/usr install \
+  && popd \
+  && rm -rf /tmp/binutils
