@@ -1,6 +1,8 @@
 #!/bin/bash
+echo "Build toolchain.."
 
-# compile Linux API headers which expose the kernel API for use by Glib
+
+# 6.7. Linux API Headers package exposes the kernel API for use by Glib
 tar -xf sources/linux-*.tar.xz -C /tmp/ \
   && mv /tmp/linux-* /tmp/linux \
   && pushd /tmp/linux \
@@ -11,7 +13,8 @@ tar -xf sources/linux-*.tar.xz -C /tmp/ \
   && popd \
   && rm -rf /tmp/linux
 
-# compile man-pages package which describe C programming language functions,
+
+# 6.8. Man-pages package describes C programming language functions,
 # important device files, and significant configuration files
 tar -xf sources/man-pages-*.tar.xz -C /tmp/ \
   && mv /tmp/man-pages-* /tmp/man-pages \
@@ -20,12 +23,14 @@ tar -xf sources/man-pages-*.tar.xz -C /tmp/ \
   && popd \
   && rm -rf /tmp/man-pages
 
-# compile Glibc package which contains the main C library
+
+# 6.9. Glibc package contains the main C library
 tar -xf sources/glibc-*.tar.xz -C /tmp/ \
  && mv /tmp/glibc-* /tmp/glibc \
- && pushd /tmp/glibc \
- && patch -Np1 -i ../glibc-2.26-fhs-1.patch \
- && ln -sfv /tools/lib/gcc /usr/lib
+ && pushd /tmp/glibc
+# 6.9.1. Installation of Glibc
+patch -Np1 -i /sources/glibc-2.26-fhs-1.patch \
+ln -sfv /tools/lib/gcc /usr/lib
 case $(uname -m) in
  i?86)   GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/7.2.0/include
          ln -sfv ld-linux.so.2 /lib/ld-lsb.so.3
@@ -49,10 +54,10 @@ CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
   libc_cv_slibdir=/lib
 unset GCC_INCDIR
 make
-make check || true
+#make check || true
 # prevent warning during install
 touch /etc/ld.so.conf
-# fix the generated Makefile to skip an uneeded sanity check that fails in the LFS partial environmen
+# fix the generated Makefile to skip an uneeded sanity check that fails in the LFS partial environment
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
 # install the package:
 make install
@@ -89,7 +94,8 @@ localedef -i zh_CN -f GB18030 zh_CN.GB18030
 popd
 rm -rf /tmp/glibc
 
-# configure Glibc
+# 6.9.2. Configuring Glibc
+# 6.9.2.1. Adding nsswitch.conf
 cat > /etc/nsswitch.conf << "EOF"
 # Begin /etc/nsswitch.conf
 passwd: files
@@ -104,8 +110,11 @@ rpc: files
 # End /etc/nsswitch.conf
 EOF
 
-# install and set up the time zone data
-tar -xf /tools/sources/tzdata2017b.tar.gz
+# 6.9.2.2. Adding time zone data
+mkdir /tmp/tzdata \
+  && tar -xf /sources/tzdata2017b.tar.gz -C /tmp/tzdata \
+  && pushd /tmp/tzdata
+
 ZONEINFO=/usr/share/zoneinfo
 mkdir -pv $ZONEINFO/{posix,right}
 for tz in etcetera southamerica northamerica europe africa antarctica \
@@ -117,11 +126,11 @@ done
 cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
 zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO
-
+popd && rm -rf /tmp/tzdata
 # set time zone info
 ln -sfv /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
-# configure dynamic loader
+# 6.9.2.3. Configuring the Dynamic Loader
 cat > /etc/ld.so.conf << "EOF"
 # Begin /etc/ld.so.conf
 /usr/local/lib
@@ -134,7 +143,7 @@ EOF
 mkdir -pv /etc/ld.so.conf.d
 
 
-# adjust toolchain
+# 6.10. Adjusting the Toolchain
 # fix linker
 mv -v /tools/bin/{ld,ld-old}
 mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
@@ -159,7 +168,7 @@ grep found dummy.log
 rm -v dummy.c a.out dummy.log
 
 
-# compile zlib package which contains compression and decompression
+# 6.11. Zlib package contains compression and decompression
 # routines used by some programs
 tar -xf sources/zlib-*.tar.xz -C /tmp/ \
   && mv /tmp/zlib-* /tmp/zlib \
@@ -172,3 +181,79 @@ tar -xf sources/zlib-*.tar.xz -C /tmp/ \
   && ln -sfv ../../lib/$(readlink /usr/lib/libz.so) /usr/lib/libz.so \
   && popd \
   && rm -rf /tmp/zlib
+
+
+# 6.12. File package contains a utility for determining
+# the type of a given file or files
+tar -xf sources/file-*.tar.gz -C /tmp/ \
+  && mv /tmp/file-* /tmp/file \
+  && pushd /tmp/file \
+  && ./configure --prefix=/usr \
+  && make \
+  && make check \
+  && make install \
+  && popd \
+  && rm -rf /tmp/file
+
+
+# 6.13. Readline package is a set of libraries that offers command-line
+# editing and history capabilities
+tar -xf sources/readline-*.tar.gz -C /tmp/ \
+  && mv /tmp/readline-* /tmp/readline \
+  && pushd /tmp/readline \
+  && sed -i '/MV.*old/d' Makefile.in \
+  && sed -i '/{OLDSUFF}/c:' support/shlib-install \
+  && ./configure --prefix=/usr  \
+      --disable-static \
+      --docdir=/usr/share/doc/readline-7.0 \
+  && make SHLIB_LIBS="-L/tools/lib -lncursesw" \
+  && make SHLIB_LIBS="-L/tools/lib -lncurses" install \
+  && mv -v /usr/lib/lib{readline,history}.so.* /lib \
+  && ln -sfv ../../lib/$(readlink /usr/lib/libreadline.so) /usr/lib/libreadline.so \
+  && ln -sfv ../../lib/$(readlink /usr/lib/libhistory.so ) /usr/lib/libhistory.so \
+  && install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-7.0 \
+  && popd \
+  && rm -rf /tmp/readline
+
+
+# 6.14. M4 package contains a macro processor
+tar -xf sources/m4-*.tar.xz -C /tmp/ \
+  && mv /tmp/m4-* /tmp/m4 \
+  && pushd /tmp/m4 \
+  && ./configure --prefix=/usr \
+  && make \
+  && make check \
+  && make install \
+  && popd \
+  && rm -rf /tmp/m4
+
+# 6.15. Bc package contains an arbitrary precision numeric processing language
+tar -xf sources/bc-*.tar.gz -C /tmp/ \
+  && mv /tmp/bc-* /tmp/bc \
+  && pushd /tmp/bc
+# use sed instead of ed
+cat > bc/fix-libmath_h << "EOF"
+#! /bin/bash
+sed -e '1 s/^/{"/'  \
+    -e 's/$/",/'    \
+    -e '2,$ s/^/"/' \
+    -e '$ d'        \
+    -i libmath.h
+sed -e '$ s/$/0}/' \
+    -i libmath.h
+EOF
+# create temporary symbolic links so the package can find the readline library
+ln -sv /tools/lib/libncursesw.so.6 /usr/lib/libncursesw.so.6
+ln -sfv libncurses.so.6 /usr/lib/libncurses.so
+# fix an issue in configure due to missing files in the early stages of LFS
+sed -i -e '/flex/s/as_fn_error/: ;; # &/' configure
+# build
+./configure --prefix=/usr   \
+  --with-readline           \
+  --mandir=/usr/share/man   \
+  --infodir=/usr/share/info \
+  && make \
+  && echo "quit" | ./bc/bc -l Test/checklib.b \
+  && make install \
+  && popd \
+  && rm -rf /tmp/bc
