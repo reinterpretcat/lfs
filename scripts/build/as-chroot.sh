@@ -23,4 +23,17 @@ exec /tools/bin/bash --login +h            \
   && ./tools/6.21-make-bzip2.sh            \
   && ./tools/6.22-make-pkg-config.sh       \
   && ./tools/6.23-make-ncurses.sh          \
-  && ./tools/6.24-make-attr.sh
+  && ./tools/6.24-make-attr.sh             \
+  && ./tools/6.25-make-acl.sh              \
+  && ./tools/6.26-make-libcap.sh           \
+  && ./tools/6.27-make-sed.sh              \
+  && ./tools/6.28-make-shadow.sh           \
+  && ./tools/6.29-make-psmisc.sh           \
+  && ./tools/6.30-make-iana-etc.sh         \
+  && ./tools/6.31-make-bison.sh            \
+  && ./tools/6.32-make-flex.sh             \
+  && ./tools/6.33-make-grep.sh             \
+  && ./tools/6.34-make-bash.sh             \
+  && exec /bin/bash --login +h             \
+     ./tools/6.35-make-libtool.sh          \
+  && ./tools/6.36-make-gdbm.sh

@@ -11,7 +11,7 @@ tar -xf sources/bzip2-*.tar.gz -C /tmp/ \
   && mv /tmp/bzip2-* /tmp/bzip2 \
   && pushd /tmp/bzip2
 # apply a patch that will install the documentation for this package
-patch -Np1 -i ../bzip2-1.0.6-install_docs-1.patch
+patch -Np1 -i sources/bzip2-1.0.6-install_docs-1.patch
 # ensure the man pages are installed into the correct location
 sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
 # prepare for compilation

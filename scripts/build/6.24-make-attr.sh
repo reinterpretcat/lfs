@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 echo "Building attr.."
-echo "Approximate build time: less than 0.3 SBU"
+echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 3.3 MB"
 
 # 6.24. Attr package contains utilities to administer the extended
