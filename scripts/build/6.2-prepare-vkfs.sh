@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 echo "Preparing Virtual Kernel File Systems.."
 
 # create directories onto which the file systems will be mounted

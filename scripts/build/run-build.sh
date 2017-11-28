@@ -2,7 +2,7 @@
 set -e
 echo "Running build.."
 
-sh 6.2-prepare-vkfs.sh
+sh /tools/6.2-prepare-vkfs.sh
 
 # enter and continue in chroot environment
 chroot "$LFS" /tools/bin/env -i \
@@ -11,4 +11,4 @@ chroot "$LFS" /tools/bin/env -i \
   PS1='\u:\w\$ '                \
   PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
   /tools/bin/bash --login +h \
-  -c "/tools/as-chroot.sh"
+  -c "sh /tools/as-chroot.sh"
