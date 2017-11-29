@@ -6,7 +6,7 @@ echo "Required disk space: 1.5 MB"
 
 # 6.42. Intltool is an internationalization tool used for extracting
 # translatable strings from source files
-tar -xf intltool-*.tar.gz -C /tmp/ \
+tar -xf /sources/intltool-*.tar.gz -C /tmp/ \
   && mv /tmp/intltool-* /tmp/intltool \
   && pushd /tmp/intltool
 # fix a warning that is caused by perl-5.22 and later

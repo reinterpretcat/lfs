@@ -5,7 +5,7 @@ echo "Approximate build time: 1.2 SBU"
 echo "Required disk space: 59 MB"
 
 # 6.17. GMP package contains math libraries
-tar -xf sources/gmp-*.tar.xz -C /tmp/ \
+tar -xf /sources/gmp-*.tar.xz -C /tmp/ \
   && mv /tmp/gmp-* /tmp/gmp \
   && pushd /tmp/gmp \
   && ./configure --prefix=/usr \

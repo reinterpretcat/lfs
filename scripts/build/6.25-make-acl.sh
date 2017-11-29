@@ -7,7 +7,7 @@ echo "Required disk space: 4.8 MB"
 # 6.25. Acl package contains utilities to administer Access Control Lists,
 # which are used to define more fine-grained discretionary access rights
 # for files and directories
-tar -xf sources/acl-*.tar.gz -C /tmp/ \
+tar -xf /sources/acl-*.tar.gz -C /tmp/ \
   && mv /tmp/acl-* /tmp/acl \
   && pushd /tmp/acl
 # modify the documentation directory so that it is a versioned directory

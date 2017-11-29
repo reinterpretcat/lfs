@@ -5,7 +5,7 @@ echo "Approximate build time: 8.6 SBU"
 echo "Required disk space: 257 MB"
 
 # 6.40. Perl package contains the Practical Extraction and Report Language
-tar -xf perl-*.tar.xz -C /tmp/ \
+tar -xf /sources/perl-*.tar.xz -C /tmp/ \
   && mv /tmp/perl-* /tmp/perl \
   && pushd /tmp/perl
 # create a basic /etc/hosts file to be referenced in one of Perl's configuration

@@ -6,7 +6,7 @@ echo "Required disk space: 4.2 MB"
 
 # 6.29. Psmisc package contains programs for displaying information
 # about running processes
-tar -xf sources/psmisc-*.tar.xz -C /tmp/ \
+tar -xf /sources/psmisc-*.tar.xz -C /tmp/ \
   && mv /tmp/psmisc-* /tmp/psmisc \
   && pushd /tmp/psmisc
 ./configure --prefix=/usr

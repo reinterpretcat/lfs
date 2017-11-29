@@ -5,7 +5,7 @@ echo "Approximate build time: 0.1 SBU"
 echo "Required disk space: 3.6 MB"
 
 # 6.15. Bc package contains an arbitrary precision numeric processing language
-tar -xf sources/bc-*.tar.gz -C /tmp/ \
+tar -xf /sources/bc-*.tar.gz -C /tmp/ \
   && mv /tmp/bc-* /tmp/bc \
   && pushd /tmp/bc
 # use sed instead of ed

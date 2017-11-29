@@ -6,7 +6,7 @@ echo "Required disk space: 17 MB"
 
 # 6.19. MPC package contains a library for the arithmetic of complex
 # numbers with arbitrarily high precision and correct rounding of the result
-tar -xf sources/mpc-*.tar.gz -C /tmp/ \
+tar -xf /sources/mpc-*.tar.gz -C /tmp/ \
   && mv /tmp/mpc-* /tmp/mpc \
   && pushd /tmp/mpc \
   && ./configure --prefix=/usr \

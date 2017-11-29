@@ -6,7 +6,7 @@ echo "Required disk space: 16 MB"
 
 # 6.12. File package contains a utility for determining
 # the type of a given file or files
-tar -xf sources/file-*.tar.gz -C /tmp/ \
+tar -xf /sources/file-*.tar.gz -C /tmp/ \
   && mv /tmp/file-* /tmp/file \
   && pushd /tmp/file \
   && ./configure --prefix=/usr \

@@ -5,7 +5,7 @@ echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 9.5 MB"
 
 # 6.38. Expat package contains a stream oriented C library for parsing XML
-tar -xf expat-*.tar.bz2 -C /tmp/ \
+tar -xf /sources/expat-*.tar.bz2 -C /tmp/ \
   && mv /tmp/expat-* /tmp/expat \
   && pushd /tmp/expat
 # fix a problem with the regession tests in the LFS environment

@@ -6,7 +6,7 @@ echo "Required disk space: 3.3 MB"
 
 # 6.24. Attr package contains utilities to administer the extended
 # attributes on filesystem objects
-tar -xf sources/attr-*.tar.gz -C /tmp/ \
+tar -xf /sources/attr-*.tar.gz -C /tmp/ \
   && mv /tmp/attr-* /tmp/attr \
   && pushd /tmp/attr
 # modify the documentation directory so that it is a versioned directory

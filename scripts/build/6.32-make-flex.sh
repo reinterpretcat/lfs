@@ -6,7 +6,7 @@ echo "Required disk space: 32 MB"
 
 # 6.32. Flex package contains a utility for generating programs
 # that recognize patterns in text
-tar -xf sources/flex-*.tar.gz -C /tmp/ \
+tar -xf /sources/flex-*.tar.gz -C /tmp/ \
   && mv /tmp/flex-* /tmp/flex \
   && pushd /tmp/flex
 # fix a problem introduced with glibc-2.26

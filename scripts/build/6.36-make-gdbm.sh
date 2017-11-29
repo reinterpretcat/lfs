@@ -8,7 +8,7 @@ echo "Required disk space: 10 MB"
 # database functions that use extensible hashing and work similar to the
 # standard UNIX dbm. The library provides primitives for storing key/data pairs,
 # searching and retrieving the data by its key and deleting a key along with its data
-tar -xf sources/gdbm-*.tar.gz -C /tmp/ \
+tar -xf /sources/gdbm-*.tar.gz -C /tmp/ \
   && mv /tmp/gdbm-* /tmp/gdbm \
   && pushd /tmp/gdbm
 ./configure --prefix=/usr \

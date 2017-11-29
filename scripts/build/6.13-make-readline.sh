@@ -6,7 +6,7 @@ echo "Required disk space: 15 MB"
 
 # 6.13. Readline package is a set of libraries that offers command-line
 # editing and history capabilities
-tar -xf sources/readline-*.tar.gz -C /tmp/ \
+tar -xf /sources/readline-*.tar.gz -C /tmp/ \
   && mv /tmp/readline-* /tmp/readline \
   && pushd /tmp/readline \
   && sed -i '/MV.*old/d' Makefile.in \

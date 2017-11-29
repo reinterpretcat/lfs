@@ -6,7 +6,7 @@ echo "Required disk space: 4.5 MB"
 
 # 6.11. Zlib package contains compression and decompression
 # routines used by some programs
-tar -xf sources/zlib-*.tar.xz -C /tmp/ \
+tar -xf /sources/zlib-*.tar.xz -C /tmp/ \
   && mv /tmp/zlib-* /tmp/zlib \
   && pushd /tmp/zlib \
   && ./configure --prefix=/usr \

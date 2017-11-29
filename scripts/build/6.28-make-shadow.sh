@@ -5,8 +5,8 @@ echo "Approximate build time: 0.2 SBU"
 echo "Required disk space: 42 MB"
 
 # 6.28. Shadow package contains programs for handling passwords in a secure way
-tar -xf sources/shadow-*.tar.xz -C /tmp/ \
-  && mv /tmp/ashadowcl-* /tmp/shadow \
+tar -xf /sources/shadow-*.tar.xz -C /tmp/ \
+  && mv /tmp/shadow-* /tmp/shadow \
   && pushd /tmp/shadow
 # disable the installation of the groups program and its man pages
 sed -i 's/groups$(EXEEXT) //' src/Makefile.in

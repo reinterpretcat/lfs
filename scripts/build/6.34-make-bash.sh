@@ -5,11 +5,11 @@ echo "Approximate build time: 2.0 SBU"
 echo "Required disk space: 56 MB"
 
 # 6.34. Bash package contains the Bourne-Again SHell
-tar -xf sources/bash-*.tar.gz -C /tmp/ \
+tar -xf /sources/bash-*.tar.gz -C /tmp/ \
   && mv /tmp/bash-* /tmp/bash \
   && pushd /tmp/bash
 # incorporate some upstream fixes
-patch -Np1 -i sources/bash-4.4-upstream_fixes-1.patch
+patch -Np1 -i /sources/bash-4.4-upstream_fixes-1.patch
 # prepare bash
 ./configure --prefix=/usr            \
     --docdir=/usr/share/doc/bash-4.4 \

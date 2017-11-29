@@ -44,6 +44,10 @@ sh /tools/6.39-make-inetutils.sh
 sh /tools/6.40-make-perl.sh
 sh /tools/6.41-make-xml-parser.sh
 sh /tools/6.42-make-intltool.sh
+sh /tools/6.43-make-autoconf.sh
+sh /tools/6.44-make-automake.sh
+sh /tools/6.45-make-xz.sh
+sh /tools/6.46-make-kmod.sh
 
 # SKIP switching to built bash
 #exec /bin/bash --login +h

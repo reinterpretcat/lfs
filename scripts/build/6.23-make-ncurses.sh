@@ -6,18 +6,19 @@ echo "Required disk space: 39 MB"
 
 # 6.23. Ncurses package contains libraries for terminal-independent
 # handling of character screens
-tar -xf sources/ncurses-*.tar.gz -C /tmp/ \
+tar -xf /sources/ncurses-*.tar.gz -C /tmp/ \
   && mv /tmp/ncurses-* /tmp/ncurses \
-  && pushd /tmp/ncurses \
-./configure --prefix=/usr \
+  && pushd /tmp/ncurses
+# configure
+./configure --prefix=/usr   \
     --mandir=/usr/share/man \
-    --with-shared     \
-    --without-debug   \
-    --without-normal  \
-    --enable-pc-files \
-    --enable-widec    \
-  && make \
-  && make install
+    --with-shared           \
+    --without-debug         \
+    --without-normal        \
+    --enable-pc-files       \
+    --enable-widec
+make
+make install
 # move the shared libraries to the /lib directory,
 mv -v /usr/lib/libncursesw.so.6* /lib
 # recreate symlink

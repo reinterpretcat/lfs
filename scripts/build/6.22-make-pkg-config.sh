@@ -6,7 +6,7 @@ echo "Required disk space: 28 MB"
 
 # 6.22. Pkg-config package contains a tool for passing the include path
 # and/or library paths to build tools during the configure and make file execution
-tar -xf sources/pkg-config-*.tar.gz -C /tmp/ \
+tar -xf /sources/pkg-config-*.tar.gz -C /tmp/ \
   && mv /tmp/pkg-config-* /tmp/pkg-config \
   && pushd /tmp/pkg-config \
   && ./configure --prefix=/usr \

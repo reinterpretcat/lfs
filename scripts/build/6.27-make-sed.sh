@@ -5,7 +5,7 @@ echo "Approximate build time: 0.3 SBU"
 echo "Required disk space: 25 MB"
 
 # 6.27. Sed package contains a stream editor
-tar -xf sources/sed-*.tar.xz -C /tmp/ \
+tar -xf /sources/sed-*.tar.xz -C /tmp/ \
   && mv /tmp/sed-* /tmp/sed \
   && pushd /tmp/sed
 # fix an issue in the LFS environment and remove a failing test

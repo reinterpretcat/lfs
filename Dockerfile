@@ -38,9 +38,8 @@ WORKDIR $LFS/sources
 RUN mkdir -pv $LFS/tools \
  && ln -sv $LFS/tools /
 
-# copy scripts and check environment
+# copy prepare scripts and check environment
 COPY [ "scripts/prepare/", "$LFS/tools/" ]
-COPY [ "scripts/build/", "$LFS/tools/" ]
 RUN chmod +x $LFS/tools/*.sh \
  && sync               \
  && $LFS/tools/version-check.sh \
@@ -108,6 +107,10 @@ RUN sh /tools/5.36-strip.sh
 USER root
 # NOTE root:root returns an error
 RUN chown -R `stat -c "%u:%g" ~` $LFS/tools
+
+# copy build scripts
+COPY [ "scripts/build/", "$LFS/tools/" ]
+RUN chmod +x $LFS/tools/*.sh
 
 # run actual building lfs when container starts
 ENTRYPOINT [ "../tools/run-build.sh" ]

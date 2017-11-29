@@ -5,7 +5,7 @@ echo "Approximate build time: 20 SBU"
 echo "Required disk space: 2.0 Gb"
 
 # 6.9. Glibc package contains the main C library
-tar -xf sources/glibc-*.tar.xz -C /tmp/ \
+tar -xf /sources/glibc-*.tar.xz -C /tmp/ \
  && mv /tmp/glibc-* /tmp/glibc \
  && pushd /tmp/glibc
 # 6.9.1. Installation of Glibc
@@ -39,7 +39,7 @@ make check || true
 touch /etc/ld.so.conf
 # fix the generated Makefile to skip an uneeded sanity check that fails in the LFS partial environment
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
-# install the package:
+# install the package
 make install
 # install the configuration file and runtime directory for nscd
 cp -v ../nscd/nscd.conf /etc/nscd.conf

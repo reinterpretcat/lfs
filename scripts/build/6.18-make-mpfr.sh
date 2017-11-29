@@ -5,7 +5,7 @@ echo "Approximate build time: 0.8 SBU"
 echo "Required disk space: 45 MB"
 
 # 6.18. MPFR package contains functions for multiple precision math
-tar -xf sources/mpfr-*.tar.xz -C /tmp/ \
+tar -xf /sources/mpfr-*.tar.xz -C /tmp/ \
   && mv /tmp/mpfr-* /tmp/mpfr \
   && pushd /tmp/mpfr \
   && ./configure --prefix=/usr \
