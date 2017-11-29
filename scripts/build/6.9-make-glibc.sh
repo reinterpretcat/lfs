@@ -34,7 +34,7 @@ CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
   libc_cv_slibdir=/lib
 unset GCC_INCDIR
 make
-make check || true
+if [ $LFS_TEST -eq 1 ]; then make check || true; fi
 # prevent warning during install
 touch /etc/ld.so.conf
 # fix the generated Makefile to skip an uneeded sanity check that fails in the LFS partial environment

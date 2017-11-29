@@ -12,7 +12,7 @@ tar -xf /sources/gperf-*.tar.gz -C /tmp/ \
 ./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.1
 # compile and install
 make
-make -j1 check
+if [ $LFS_TEST -eq 1 ]; then make -j1 check; fi
 make install
 # cleanup
 popd \

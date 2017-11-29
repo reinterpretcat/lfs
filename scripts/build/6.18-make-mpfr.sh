@@ -14,7 +14,7 @@ tar -xf /sources/mpfr-*.tar.xz -C /tmp/ \
         --docdir=/usr/share/doc/mpfr-3.1.5 \
   && make \
   && make html \
-  && make check \
+  && if [ $LFS_TEST -eq 1 ]; then make check; fi \
   && make install \
   && make install-html \
   && popd \

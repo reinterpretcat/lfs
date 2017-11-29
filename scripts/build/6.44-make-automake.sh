@@ -12,7 +12,7 @@ tar -xf /sources/automake-*.tar.xz -C /tmp/ \
 ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.15.1
 make
 sed -i "s:./configure:LEXLIB=/usr/lib/libfl.a &:" t/lex-{clean,depend}-cxx.sh
-make -j4 check || true
+if [ $LFS_TEST -eq 1 ]; then make -j4 check || true; fi
 make install
 # cleanup
 popd \

@@ -10,7 +10,7 @@ tar -xf /sources/XML-Parser-*.tar.gz -C /tmp/ \
   && pushd /tmp/XML-Parser
 perl Makefile.PL
 make
-make test
+if [ $LFS_TEST -eq 1 ]; then make test; fi
 make install
 # cleanup
 popd \

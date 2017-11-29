@@ -15,7 +15,7 @@ tar -xf /sources/gdbm-*.tar.gz -C /tmp/ \
   --disable-static        \
   --enable-libgdbm-compat
 make
-make check
+if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # cleanup
 popd \

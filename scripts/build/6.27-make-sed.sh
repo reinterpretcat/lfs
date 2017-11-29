@@ -15,7 +15,7 @@ sed -i 's/testsuite.panic-tests.sh//' Makefile.in
 ./configure --prefix=/usr --bindir=/bin
 make
 make html
-make check
+if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 install -d -m755           /usr/share/doc/sed-4.4
 install -m644 doc/sed.html /usr/share/doc/sed-4.4

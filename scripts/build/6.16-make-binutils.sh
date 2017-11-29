@@ -21,7 +21,7 @@ mkdir -v build \
        --disable-werror        \
        --with-system-zlib      \
   && make tooldir=/usr         \
-  && make -k check  || true    \
+  && if [ $LFS_TEST -eq 1 ]; then make -k check || true; fi \
   && make tooldir=/usr install \
   && popd \
   && rm -rf /tmp/binutils

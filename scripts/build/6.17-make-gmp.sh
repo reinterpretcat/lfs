@@ -13,8 +13,8 @@ tar -xf /sources/gmp-*.tar.xz -C /tmp/ \
         --disable-static \
         --docdir=/usr/share/doc/gmp-6.1.2 \
   && make \
-  && make html \
-  && make check 2>&1 | tee gmp-check-log
+  && make html
+if [ $LFS_TEST -eq 1 ]; then make check 2>&1 | tee gmp-check-log; fi
 # ensure that all tests passed (manual)
 awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
 # continue with installation

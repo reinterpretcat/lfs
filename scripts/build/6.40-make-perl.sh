@@ -26,7 +26,7 @@ sh Configure -des -Dprefix=/usr   \
 make
 # several tests related to zlib will fail due to using the system
 # version of zlib instead of the internal version
-make -k test || true
+if [ $LFS_TEST -eq 1 ]; then make -k test || true; fi
 make install
 unset BUILD_ZLIB BUILD_BZIP2
 # cleanup

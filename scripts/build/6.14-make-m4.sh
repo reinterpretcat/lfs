@@ -10,7 +10,7 @@ tar -xf /sources/m4-*.tar.xz -C /tmp/ \
   && pushd /tmp/m4 \
   && ./configure --prefix=/usr \
   && make \
-  && make check \
+  && if [ $LFS_TEST -eq 1 ]; then make check; fi \
   && make install \
   && popd \
   && rm -rf /tmp/m4

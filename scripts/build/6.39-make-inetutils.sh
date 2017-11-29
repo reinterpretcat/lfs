@@ -22,7 +22,7 @@ tar -xf /sources/inetutils-*.tar.xz -C /tmp/ \
 make
 # One test, libls.sh, may fail in the initial chroot environment but will pass
 # if the test is rerun after the LFS system is complete
-make check || true
+if [ $LFS_TEST -eq 1 ]; then make check || true; fi
 make install
 mv -v /usr/bin/{hostname,ping,ping6,traceroute} /bin
 mv -v /usr/bin/ifconfig /sbin

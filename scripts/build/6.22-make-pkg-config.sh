@@ -14,7 +14,7 @@ tar -xf /sources/pkg-config-*.tar.gz -C /tmp/ \
       --disable-host-tool  \
       --docdir=/usr/share/doc/pkg-config-0.29.2 \
   && make \
-  && make check \
+    && if [ $LFS_TEST -eq 1 ]; then make check; fi \
   && make install \
   && popd \
   && rm -rf /tmp/pkg-config

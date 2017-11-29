@@ -11,7 +11,7 @@ tar -xf /sources/autoconf-*.tar.xz -C /tmp/ \
   && pushd /tmp/autoconf
 ./configure --prefix=/usr
 make
-make check || check
+if [ $LFS_TEST -eq 1 ]; then make check || true; fi
 make install
 # cleanup
 popd \

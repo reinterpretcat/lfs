@@ -14,7 +14,7 @@ sed -i 's|usr/bin/env |bin/|' run.sh.in
 ./configure --prefix=/usr --disable-static
 # compile and install
 make
-make check
+if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # install docs
 install -v -dm755 /usr/share/doc/expat-2.2.3

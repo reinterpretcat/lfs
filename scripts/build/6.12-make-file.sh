@@ -11,7 +11,7 @@ tar -xf /sources/file-*.tar.gz -C /tmp/ \
   && pushd /tmp/file \
   && ./configure --prefix=/usr \
   && make \
-  && make check \
+  && if [ $LFS_TEST -eq 1 ]; then make check; fi \
   && make install \
   && popd \
   && rm -rf /tmp/file

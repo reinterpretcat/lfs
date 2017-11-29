@@ -11,7 +11,7 @@ tar -xf /sources/libtool-*.tar.xz -C /tmp/ \
   && pushd /tmp/libtool
 ./configure --prefix=/usr
 make
-make check
+if [ $LFS_TEST -eq 1 ]; then make check; fi
 # Five tests are known to fail in the LFS build environment due to a circular
 # dependency, but all tests pass if rechecked after automake is installed
 make install || true
