@@ -36,6 +36,10 @@ sh /tools/6.31-make-bison.sh
 sh /tools/6.32-make-flex.sh
 sh /tools/6.33-make-grep.sh
 sh /tools/6.34-make-bash.sh
+
+# SKIP switching to built bash
+#exec /bin/bash --login +h
+
 sh /tools/6.35-make-libtool.sh
 sh /tools/6.36-make-gdbm.sh
 sh /tools/6.37-make-gperf.sh
@@ -52,9 +56,17 @@ sh /tools/6.47-make-gettext.sh
 sh /tools/6.48-make-procps-ng.sh
 sh /tools/6.49-make-e2fsprogs.sh
 sh /tools/6.50-make-coreutils.sh
-
-# SKIP switching to built bash
-#exec /bin/bash --login +h
-
-sh /tools/6.35-make-libtool.sh
-sh /tools/6.36-make-gdbm.sh
+sh /tools/6.51-make-diffutils.sh
+sh /tools/6.52-make-gawk.sh
+sh /tools/6.53-make-findutils.sh
+sh /tools/6.54-make-groff.sh
+sh /tools/6.55-make-grub.sh
+sh /tools/6.56-make-less.sh
+sh /tools/6.57-make-gzip.sh
+sh /tools/6.58-make-iproute2.sh
+sh /tools/6.59-make-kbd.sh
+sh /tools/6.60-make-libpipeline.sh
+sh /tools/6.61-make-make.sh
+sh /tools/6.62-make-patch.sh
+sh /tools/6.63-make-sysklogd.sh
+sh /tools/6.63-make-sysvinit.sh
