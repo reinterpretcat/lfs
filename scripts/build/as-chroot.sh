@@ -48,6 +48,10 @@ sh /tools/6.43-make-autoconf.sh
 sh /tools/6.44-make-automake.sh
 sh /tools/6.45-make-xz.sh
 sh /tools/6.46-make-kmod.sh
+sh /tools/6.47-make-gettext.sh
+sh /tools/6.48-make-procps-ng.sh
+sh /tools/6.49-make-e2fsprogs.sh
+sh /tools/6.50-make-coreutils.sh
 
 # SKIP switching to built bash
 #exec /bin/bash --login +h
