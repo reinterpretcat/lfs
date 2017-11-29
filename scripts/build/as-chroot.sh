@@ -69,4 +69,5 @@ sh /tools/6.60-make-libpipeline.sh
 sh /tools/6.61-make-make.sh
 sh /tools/6.62-make-patch.sh
 sh /tools/6.63-make-sysklogd.sh
-sh /tools/6.63-make-sysvinit.sh
+sh /tools/6.64-make-sysvinit.sh
+sh /tools/6.65-make-eudev.sh
