@@ -19,10 +19,10 @@ sed -i 's:{(:\\{(:' test/run
 # configure, compile and install
 ./configure --prefix=/usr \
     --bindir=/bin \
-    --disable-static \
-  && make \
-  && if [ $LFS_TEST -eq 1 ]; then make -j1 tests root-tests; fi \
-  && make install install-dev install-lib
+    --disable-static
+make
+if [ $LFS_TEST -eq 1 ]; then make -j1 tests root-tests; fi
+make install install-dev install-lib
 # adjust installation
 chmod -v 755 /usr/lib/libattr.so
 mv -v /usr/lib/libattr.so.* /lib

@@ -8,7 +8,9 @@ echo "Required disk space: 27 MB"
 # important device files, and significant configuration files
 tar -xf /sources/man-pages-*.tar.xz -C /tmp/ \
   && mv /tmp/man-pages-* /tmp/man-pages \
-  && pushd /tmp/man-pages \
-  && make install \
-  && popd \
+  && pushd /tmp/man-pages
+
+make install
+
+popd \
   && rm -rf /tmp/man-pages

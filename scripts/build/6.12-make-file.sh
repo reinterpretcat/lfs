@@ -8,10 +8,12 @@ echo "Required disk space: 16 MB"
 # the type of a given file or files
 tar -xf /sources/file-*.tar.gz -C /tmp/ \
   && mv /tmp/file-* /tmp/file \
-  && pushd /tmp/file \
-  && ./configure --prefix=/usr \
-  && make \
-  && if [ $LFS_TEST -eq 1 ]; then make check; fi \
-  && make install \
-  && popd \
+  && pushd /tmp/file
+
+./configure --prefix=/usr
+make
+if [ $LFS_TEST -eq 1 ]; then make check; fi
+make install
+
+popd \
   && rm -rf /tmp/file

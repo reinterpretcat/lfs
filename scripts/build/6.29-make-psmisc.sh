@@ -9,6 +9,7 @@ echo "Required disk space: 4.2 MB"
 tar -xf /sources/psmisc-*.tar.xz -C /tmp/ \
   && mv /tmp/psmisc-* /tmp/psmisc \
   && pushd /tmp/psmisc
+
 ./configure --prefix=/usr
 make
 make install

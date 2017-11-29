@@ -8,6 +8,7 @@ echo "Required disk space: 2.0 MB"
 tar -xf /sources/XML-Parser-*.tar.gz -C /tmp/ \
   && mv /tmp/XML-Parser-* /tmp/XML-Parser \
   && pushd /tmp/XML-Parser
+
 perl Makefile.PL
 make
 if [ $LFS_TEST -eq 1 ]; then make test; fi

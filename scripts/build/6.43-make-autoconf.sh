@@ -9,6 +9,7 @@ echo "Required disk space: 17.3 MB"
 tar -xf /sources/autoconf-*.tar.xz -C /tmp/ \
   && mv /tmp/autoconf-* /tmp/autoconf \
   && pushd /tmp/autoconf
+
 ./configure --prefix=/usr
 make
 if [ $LFS_TEST -eq 1 ]; then make check || true; fi

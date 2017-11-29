@@ -8,6 +8,7 @@ echo "Required disk space: 2.0 Gb"
 tar -xf /sources/glibc-*.tar.xz -C /tmp/ \
  && mv /tmp/glibc-* /tmp/glibc \
  && pushd /tmp/glibc
+
 # 6.9.1. Installation of Glibc
 patch -Np1 -i /sources/glibc-2.26-fhs-1.patch \
 ln -sfv /tools/lib/gcc /usr/lib

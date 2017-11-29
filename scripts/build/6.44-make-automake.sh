@@ -9,6 +9,7 @@ echo "Required disk space:  MB"
 tar -xf /sources/automake-*.tar.xz -C /tmp/ \
   && mv /tmp/automake-* /tmp/automake \
   && pushd /tmp/automake
+
 ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.15.1
 make
 sed -i "s:./configure:LEXLIB=/usr/lib/libfl.a &:" t/lex-{clean,depend}-cxx.sh

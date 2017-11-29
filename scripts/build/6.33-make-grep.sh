@@ -8,6 +8,7 @@ echo "Required disk space: 29 MB"
 tar -xf /sources/grep-*.tar.xz -C /tmp/ \
   && mv /tmp/grep-* /tmp/grep \
   && pushd /tmp/grep
+
 ./configure --prefix=/usr --bindir=/bin
 make
 if [ $LFS_TEST -eq 1 ]; then make check; fi

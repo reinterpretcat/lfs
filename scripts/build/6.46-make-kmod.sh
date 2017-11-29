@@ -8,6 +8,7 @@ echo "Required disk space: 12 MB"
 tar -xf /sources/kmod-*.tar.xz -C /tmp/ \
   && mv /tmp/kmod-* /tmp/kmod \
   && pushd /tmp/kmod
+
 ./configure --prefix=/usr   \
     --bindir=/bin           \
     --sysconfdir=/etc       \

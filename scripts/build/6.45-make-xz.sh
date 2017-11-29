@@ -9,9 +9,10 @@ echo "Required disk space: 15 MB"
 tar -xf /sources/xz-*.tar.xz -C /tmp/ \
   && mv /tmp/xz-* /tmp/xz \
   && pushd /tmp/xz
-./configure --prefix=/usr  \
-  --disable-static           \
-  --docdir=/usr/share/doc/xz-5.2.3
+
+./configure --prefix=/usr      \
+    --disable-static           \
+    --docdir=/usr/share/doc/xz-5.2.3
 make
 if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install

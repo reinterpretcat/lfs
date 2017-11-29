@@ -8,6 +8,7 @@ echo "Required disk space: 2.3 MB"
 tar -xf /sources/iana-etc-*.tar.bz2 -C /tmp/ \
   && mv /tmp/iana-etc-* /tmp/iana-etc \
   && pushd /tmp/iana-etc
+
 make
 make install
 # cleanup

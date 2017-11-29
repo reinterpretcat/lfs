@@ -8,13 +8,15 @@ echo "Required disk space: 28 MB"
 # and/or library paths to build tools during the configure and make file execution
 tar -xf /sources/pkg-config-*.tar.gz -C /tmp/ \
   && mv /tmp/pkg-config-* /tmp/pkg-config \
-  && pushd /tmp/pkg-config \
-  && ./configure --prefix=/usr \
-      --with-internal-glib \
-      --disable-host-tool  \
-      --docdir=/usr/share/doc/pkg-config-0.29.2 \
-  && make \
-    && if [ $LFS_TEST -eq 1 ]; then make check; fi \
-  && make install \
-  && popd \
+  && pushd /tmp/pkg-config
+
+./configure --prefix=/usr \
+    --with-internal-glib  \
+    --disable-host-tool   \
+    --docdir=/usr/share/doc/pkg-config-0.29.2
+make
+if [ $LFS_TEST -eq 1 ]; then make check; fi
+make install
+
+popd \
   && rm -rf /tmp/pkg-config

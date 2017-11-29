@@ -28,9 +28,10 @@ sed -i -e '/flex/s/as_fn_error/: ;; # &/' configure
 ./configure --prefix=/usr   \
   --with-readline           \
   --mandir=/usr/share/man   \
-  --infodir=/usr/share/info \
-  && make \
-  && echo "quit" | ./bc/bc -l Test/checklib.b \
-  && make install \
-  && popd \
+  --infodir=/usr/share/info
+make
+echo "quit" | ./bc/bc -l Test/checklib.b
+make install
+
+popd \
   && rm -rf /tmp/bc

@@ -11,17 +11,18 @@ tar -xf /sources/binutils-*.tar.bz2 -C /tmp/ \
   && pushd /tmp/binutils
 # verify that the PTYs are working properly inside the chroot environment
 expect -c "spawn ls"
-mkdir -v build \
-  && cd build \
-  && ../configure --prefix=/usr \
-       --enable-gold           \
-       --enable-ld=default     \
-       --enable-plugins        \
-       --enable-shared         \
-       --disable-werror        \
-       --with-system-zlib      \
-  && make tooldir=/usr         \
-  && if [ $LFS_TEST -eq 1 ]; then make -k check || true; fi \
-  && make tooldir=/usr install \
-  && popd \
+mkdir -v build
+cd build
+../configure --prefix=/usr   \
+     --enable-gold           \
+     --enable-ld=default     \
+     --enable-plugins        \
+     --enable-shared         \
+     --disable-werror        \
+     --with-system-zlib
+make tooldir=/usr
+if [ $LFS_TEST -eq 1 ]; then make -k check || true; fi
+make tooldir=/usr install
+
+popd \
   && rm -rf /tmp/binutils

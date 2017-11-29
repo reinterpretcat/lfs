@@ -9,6 +9,7 @@ echo "Required disk space: 43 MB"
 tar -xf /sources/libtool-*.tar.xz -C /tmp/ \
   && mv /tmp/libtool-* /tmp/libtool \
   && pushd /tmp/libtool
+
 ./configure --prefix=/usr
 make
 if [ $LFS_TEST -eq 1 ]; then make check; fi

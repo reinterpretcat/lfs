@@ -9,7 +9,7 @@ echo "Required disk space: 39 MB"
 tar -xf /sources/ncurses-*.tar.gz -C /tmp/ \
   && mv /tmp/ncurses-* /tmp/ncurses \
   && pushd /tmp/ncurses
-# configure
+
 ./configure --prefix=/usr   \
     --mandir=/usr/share/man \
     --with-shared           \
