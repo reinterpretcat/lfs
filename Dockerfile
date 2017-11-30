@@ -5,14 +5,10 @@ LABEL description="Automated LFS build"
 LABEL version="8.1"
 LABEL maintainer="ilya.builuk@gmail.com"
 
-# GNU make --jobs parameter which specifies maximum number
-# of jobs can be run in parallel
-ARG JOB_COUNT=1
-# sets flag whether test suites for some packages should be run
-ARG LFS_TEST=1
-
-# set variables
-ENV LFS=/mnt/lfs
+# set environment variables
+ENV LFS=/mnt/lfs \
+    LFS_TEST=1   \
+    JOB_COUNT=1
 
 # set bash as default shell
 WORKDIR /bin
@@ -60,8 +56,8 @@ COPY [ "scripts/prepare/.bash_profile", "scripts/prepare/.bashrc", "/home/lfs/" 
 RUN source ~/.bash_profile
 
 # must be defined as ENV to be accessible by RUN commands
-ENV LC_ALL=POSIX \
-  LFS_TGT=x86_64-lfs-linux-gnu \
+ENV LC_ALL=POSIX                \
+  LFS_TGT=x86_64-lfs-linux-gnu  \
   PATH=/tools/bin:/bin:/usr/bin \
   MAKEFLAGS="-j $JOB_COUNT"
 

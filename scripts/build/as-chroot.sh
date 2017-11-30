@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 echo "Continue with chroot environment.."
+echo "Tests enabled: $LFS_TEST"
 
 # SKIP remove the "I have no name!" promp
 # exec /tools/bin/bash --login +h
@@ -71,3 +72,8 @@ sh /tools/6.62-make-patch.sh
 sh /tools/6.63-make-sysklogd.sh
 sh /tools/6.64-make-sysvinit.sh
 sh /tools/6.65-make-eudev.sh
+sh /tools/6.66-make-util-linux.sh
+sh /tools/6.67-make-man-db.sh
+sh /tools/6.68-make-tar.sh
+sh /tools/6.69-make-texinfo.sh
+sh /tools/6.70-make-vim.sh

@@ -5,10 +5,11 @@ echo "Running build.."
 sh /tools/6.2-prepare-vkfs.sh
 
 # enter and continue in chroot environment
-chroot "$LFS" /tools/bin/env -i \
-  HOME=/root                    \
-  TERM="$TERM"                  \
-  PS1='\u:\w\$ '                \
+chroot "$LFS" /tools/bin/env -i                 \
+  HOME=/root                                    \
+  TERM="$TERM"                                  \
+  PS1='\u:\w\$ '                                \
   PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
-  /tools/bin/bash --login +h \
+  LFS_TEST=$LFS_TEST                            \
+  /tools/bin/bash --login +h                    \
   -c "sh /tools/as-chroot.sh"
