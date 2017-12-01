@@ -9,10 +9,10 @@ tar -xf /sources/grub-*.tar.xz -C /tmp/ \
   && mv /tmp/grub-* /tmp/grub \
   && pushd /tmp/grub
 
-./configure --prefix=/usr
-    --sbindir=/sbin
-    --sysconfdir=/etc
-    --disable-efiemu
+./configure --prefix=/usr \
+    --sbindir=/sbin       \
+    --sysconfdir=/etc     \
+    --disable-efiemu      \
     --disable-werror
 make
 make install

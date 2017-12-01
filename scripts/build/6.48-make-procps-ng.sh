@@ -9,11 +9,11 @@ tar -xf /sources/procps-ng-*.tar.xz -C /tmp/ \
   && mv /tmp/procps-ng-* /tmp/procps-ng \
   && pushd /tmp/procps-ng
 # prepare for compilation
-./configure --prefix=/usr                   /
-  --exec-prefix=                            /
-  --libdir=/usr/lib                         /
-  --docdir=/usr/share/doc/procps-ng-3.3.12  /
-  --disable-static                          /
+./configure --prefix=/usr                   \
+  --exec-prefix=                            \
+  --libdir=/usr/lib                         \
+  --docdir=/usr/share/doc/procps-ng-3.3.12  \
+  --disable-static                          \
   --disable-kill
 # compile, test and install
 make
