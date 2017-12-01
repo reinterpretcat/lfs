@@ -15,9 +15,10 @@ tar -xf /sources/gmp-*.tar.xz -C /tmp/ \
     --docdir=/usr/share/doc/gmp-6.1.2
 make
 make html
-if [ $LFS_TEST -eq 1 ]; then make check 2>&1 | tee gmp-check-log; fi
-# ensure that all tests passed (manual)
-awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
+if [ $LFS_TEST -eq 1 ]; then
+  make check 2>&1 | tee gmp-check-log
+  awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
+fi
 # continue with installation
 make install
 make install-html

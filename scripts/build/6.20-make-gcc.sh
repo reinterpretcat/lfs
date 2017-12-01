@@ -31,9 +31,11 @@ make
 # increase the stack size prior to running the tests
 ulimit -s 32768
 # test the results, but do not stop at errors
-if [ $LFS_TEST -eq 1 ]; then make -k check || true; fi
-# check resualts (manual)
-../contrib/test_summary | grep -A7 Summ
+if [ $LFS_TEST -eq 1 ]; then
+   make -k check || true
+   # check results (manual)
+   ../contrib/test_summary | grep -A7 Summ
+fi
 # install
 make install
 # make symlinks

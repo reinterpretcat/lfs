@@ -20,15 +20,19 @@ FORCE_UNSAFE_CONFIGURE=1 ./configure \
 # compile
 FORCE_UNSAFE_CONFIGURE=1 make
 # test
-if [ $LFS_TEST -eq 1 ]; then make NON_ROOT_USERNAME=nobody check-root; fi
-echo "dummy:x:1000:nobody" >> /etc/group
-chown -Rv nobody .
-su nobody -s /bin/bash \
-          -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check"
-sed -i '/dummy/d' /etc/group
+if [ $LFS_TEST -eq 1 ]; then
+  make NON_ROOT_USERNAME=nobody check-root
+  echo "dummy:x:1000:nobody" >> /etc/group
+  chown -Rv nobody .
+  # test programs test-getlogin and date-debug are known to fail in a partially
+  # built system environment like the chroot environment here
+  su nobody -s /bin/bash \
+            -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check" || true
+  sed -i '/dummy/d' /etc/group
+fi
 # install
 make install
-# msove programs to the locations specified by the FHS
+# move programs to the locations specified by the FHS
 mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin
 mv -v /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin
 mv -v /usr/bin/{rmdir,stty,sync,true,uname} /bin
