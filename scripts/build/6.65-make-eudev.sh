@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 echo "Building .."
-echo "Approximate build time:   SBU"
-echo "Required disk space:  MB"
+echo "Approximate build time: 0.2 SBU"
+echo "Required disk space: 78 MB"
 
 # 6.65. Eudev package contains programs for dynamic creation of device nodes
 tar -xf /sources/eudev-*.tar.gz -C /tmp/ \
