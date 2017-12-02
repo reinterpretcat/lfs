@@ -3,6 +3,14 @@ set -e
 echo "Cleaning up.."
 
 # cleanup temp files
+# workaround for https://github.com/moby/moby/issues/13451
+pushd /tmp/
+for i in $(ls -d */); do
+  while [[ -e  ${i%%/}/confdir3/confdir3 ]]; do
+    mv confdir3/confdir3 confdir3a; rmdir confdir3; mv confdir3a confdir3;
+  done;
+done;
+popd
 rm -rf /tmp/*
 
 # cleanup leftovers

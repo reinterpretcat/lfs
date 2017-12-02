@@ -6,7 +6,7 @@ echo "Required disk space: 128 MB"
 
 # 6.70. Vim package contains a powerful text editor
 tar -xf /sources/vim-*.tar.bz2 -C /tmp/ \
-  && mv /tmp/vim-* /tmp/vim \
+  && mv /tmp/vim* /tmp/vim \
   && pushd /tmp/vim
 
 # change default location of the vimrc configuration file to /etc
