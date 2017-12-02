@@ -37,7 +37,7 @@ mkdir -pv /etc/udev/rules.d
 if [ $LFS_TEST -eq 1 ]; then make LD_LIBRARY_PATH=/tools/lib check; fi
 # install
 make LD_LIBRARY_PATH=/tools/lib install
-tar -xvf ../udev-lfs-20140408.tar.bz2
+tar -xvf /sources/udev-lfs-20140408.tar.bz2
 make -f udev-lfs-20140408/Makefile.lfs install
 # create initial database
 LD_LIBRARY_PATH=/tools/lib udevadm hwdb --update
