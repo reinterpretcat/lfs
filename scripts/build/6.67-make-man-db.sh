@@ -23,4 +23,4 @@ if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # cleanup
 popd \
-  && rm -rf /tmp/man-db
+  && rm -rf /tmp/man-db || true

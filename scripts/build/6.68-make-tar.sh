@@ -18,4 +18,4 @@ make install
 make -C doc install-html docdir=/usr/share/doc/tar-1.29
 # cleanup
 popd \
-  && rm -rf /tmp/tar
+  && rm -rf /tmp/tar || true

@@ -6,9 +6,9 @@ echo "Required disk space: 128 MB"
 
 # 6.69. Texinfo package contains programs for reading, writing,
 # and converting info pages
-tar -xf /sources/tar-*.tar.xz -C /tmp/ \
-  && mv /tmp/tar-* /tmp/tar \
-  && pushd /tmp/tar
+tar -xf /sources/texinfo-*.tar.xz -C /tmp/ \
+  && mv /tmp/texinfo-* /tmp/texinfo \
+  && pushd /tmp/texinfo
 
 ./configure --prefix=/usr --disable-static
 make
@@ -24,4 +24,4 @@ done
 popd
 # cleanup
 popd \
-  && rm -rf /tmp/tar
+  && rm -rf /tmp/texinfo
