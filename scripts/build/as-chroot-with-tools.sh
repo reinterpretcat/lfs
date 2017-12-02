@@ -77,3 +77,7 @@ sh /tools/6.67-make-man-db.sh
 sh /tools/6.68-make-tar.sh
 sh /tools/6.69-make-texinfo.sh
 sh /tools/6.70-make-vim.sh
+sh /tools/6.71-make-strip.sh
+sh /tools/6.72-make-clean.sh
+
+logout

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 echo "Building .."
-echo "Approximate build time:   SBU"
-echo "Required disk space:  MB"
+echo "Approximate build time: 0.1 SBU"
+echo "Required disk space: 19 MB"
 
 # 6.57. Gzip package contains programs for compressing and decompressing files
 tar -xf /sources/gzip-*.tar.xz -C /tmp/ \

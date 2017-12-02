@@ -34,7 +34,7 @@ LIBRARY_PATH=/tools/lib make
 mkdir -pv /lib/udev/rules.d
 mkdir -pv /etc/udev/rules.d
 # test
-if [ $LFS_TEST -eq 1 ]; make LD_LIBRARY_PATH=/tools/lib check; fi
+if [ $LFS_TEST -eq 1 ]; then make LD_LIBRARY_PATH=/tools/lib check; fi
 # install
 make LD_LIBRARY_PATH=/tools/lib install
 tar -xvf ../udev-lfs-20140408.tar.bz2
