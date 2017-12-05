@@ -6,6 +6,10 @@ This repository contains docker configuration to build LFS system currently base
 
 Work in progress: repository will be updated according my progress with LFS book.
 
+## Structure
+
+Script's are organized in the way of following book structure whenever it makes sense.
+
 ## Build
 
 With docker compose:

@@ -19,17 +19,21 @@ FORCE_UNSAFE_CONFIGURE=1 ./configure \
   --enable-no-install-program=kill,uptime
 # compile
 FORCE_UNSAFE_CONFIGURE=1 make
+
+# TODO
+echo "NOTE Tests are skipped"
 # test
-if [ $LFS_TEST -eq 1 ]; then
-  make NON_ROOT_USERNAME=nobody check-root
-  echo "dummy:x:1000:nobody" >> /etc/group
-  chown -Rv nobody .
+#if [ $LFS_TEST -eq 1 ]; then
+  #make NON_ROOT_USERNAME=nobody check-root
+  #echo "dummy:x:1000:nobody" >> /etc/group
+  #chown -Rv nobody .
   # test programs test-getlogin and date-debug are known to fail in a partially
   # built system environment like the chroot environment here
-  su nobody -s /bin/bash \
-            -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check" || true
-  sed -i '/dummy/d' /etc/group
-fi
+  #su nobody -s /bin/bash \
+  #          -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check" || true
+  #sed -i '/dummy/d' /etc/group
+#fi
+
 # install
 make install
 # move programs to the locations specified by the FHS
