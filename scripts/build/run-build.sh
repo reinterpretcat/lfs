@@ -2,6 +2,7 @@
 set -e
 echo "Running build.."
 
+# prepartion
 sh /tools/6.2-prepare-vkfs.sh
 
 # enter and continue in chroot environment with tools
@@ -20,3 +21,8 @@ chroot "$LFS" /usr/bin/env -i            \
   PATH=/bin:/usr/bin:/sbin:/usr/sbin     \
   /bin/bash --login                      \
   -c "sh /tools/as-chroot-with-usr.sh"
+
+# TODO: make archive from LFS
+
+# cleanup
+sh /tools/9.x-cleanup.sh
