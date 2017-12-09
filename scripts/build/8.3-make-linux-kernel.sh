@@ -12,14 +12,13 @@ tar -xf /sources/linux-*.tar.xz -C /tmp/ \
 # ensure proper ownership of the files
 chown -R 0:0 .
 
-echo "At the moment, this step requires manual work"
-echo "Please follow LFS book instructions in 8.3. chapter"
-echo "Press any key to continue.."
-read
-
 # 8.3.1 install kernel
+# clean source tree
 make mrproper
-make menuconfig
+# copy premade config
+# NOTE manual way is by launching:
+# make menuconfig
+cp /tools/kernel.config .config
 # compile
 make
 # installation

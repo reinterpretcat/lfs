@@ -1,5 +1,12 @@
 #!/bin/bash
 
+### Global ###
+
+# set 1 to run tests; running tests takes much more time
+LFS_TEST=0
+# degree of parallelism for compilation
+JOB_COUNT=1
+
 
 ### Boot settings ###
 
