@@ -7,7 +7,7 @@ LABEL maintainer="ilya.builuk@gmail.com"
 
 # set environment variables
 ENV LFS=/mnt/lfs \
-    LFS_TEST=1   \
+    LFS_TEST=0   \
     JOB_COUNT=1
 
 # set bash as default shell

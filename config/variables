@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+### Boot settings ###
+
+# loop device
+LOOP=/dev/loop2
+# inital ram disk size in KB
+IMAGE_SIZE="700000"
+# location of initrd tree
+INITRD_TREE=$LFS
+# output image
+IMAGE=isolinux/ramdisk.img
