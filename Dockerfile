@@ -29,7 +29,7 @@ RUN mkdir -pv     $LFS/sources \
 WORKDIR $LFS/sources
 
 # create tools directory and symlink
-RUN mkdir -pv $LFS/tools \
+RUN mkdir -pv $LFS/tools   \
  && ln    -sv $LFS/tools /
 
 # copy scripts
@@ -38,21 +38,21 @@ COPY [ "scripts/prepare/", "scripts/build/", "scripts/image/", "$LFS/tools/" ]
 COPY [ "config/.variables",  "config/kernel.config", "$LFS/tools/" ]
 
 # check environment
-RUN chmod +x $LFS/tools/*.sh \
- && sync               \
+RUN chmod +x $LFS/tools/*.sh    \
+ && sync                        \
  && $LFS/tools/version-check.sh \
  && $LFS/tools/library-check.sh
 
 # create lfs user with 'lfs' password
-RUN groupadd lfs \
+RUN groupadd lfs                                    \
  && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
  && echo "lfs:lfs" | chpasswd
 
 # give lfs user ownership of directories
-RUN chown -v lfs $LFS/tools \
+RUN chown -v lfs $LFS/tools  \
  && chown -v lfs $LFS/sources
 
- # login as lfs user and set up environment
+ # login as lfs user
 USER lfs
 COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile

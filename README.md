@@ -8,15 +8,24 @@ Work in progress: repository will be updated according my progress with LFS book
 
 ## Structure
 
-Script's are organized in the way of following book structure whenever it makes sense.
+Scripts are organized in the way of following book structure whenever it makes sense. Some deviations are done to make a bootable iso image.
 
 ## Build
 
 With docker compose:
 
-    sudo docker-compose up
+    # build image
+    docker build --tag lfs .
+    # run container
+    sudo docker run -it --privileged --name lfs lfs
+    # TODO copy iso image to host
+    sudo docker cp lfs:/home/tools/lfs.iso .
 
-Be patient as it takes time. You might consider to increase parallelism by tweaking __JOB_COUNT__ param. Please note, that extended privileges are required by docker container in order to execute some commands (e.g. mount).
+Be patient as it takes time. Please note, that extended privileges are required by docker container in order to execute some commands (e.g. mount).
+
+## Usage
+
+Final result is bootable iso image with LFS system which, for example, can be used to load the system inside virtual machine (tested with VirtualBox). This differs from then LFS system built by following book's instructions strictly.
 
 ## License
 
