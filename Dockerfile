@@ -33,7 +33,7 @@ RUN mkdir -pv $LFS/tools   \
  && ln    -sv $LFS/tools /
 
 # copy scripts
-COPY [ "scripts/prepare/", "scripts/build/", "scripts/image/", "$LFS/tools/" ]
+COPY [ "scripts/run-all.sh", "scripts/prepare/", "scripts/build/", "scripts/image/", "$LFS/tools/" ]
 # copy configuration
 COPY [ "config/.variables",  "config/kernel.config", "$LFS/tools/" ]
 
