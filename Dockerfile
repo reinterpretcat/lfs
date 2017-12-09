@@ -14,23 +14,23 @@ RUN rm sh && ln -s bash sh
 
 # install required packages
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    bison           \
-    file            \
-    gawk            \
-    texinfo         \
-    wget            \
- && apt-get -q -y autoremove \
+    build-essential                      \
+    bison                                \
+    file                                 \
+    gawk                                 \
+    texinfo                              \
+    wget                                 \
+ && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
 
 # create sources directory as writable and sticky
-RUN mkdir -pv $LFS/sources \
+RUN mkdir -pv     $LFS/sources \
  && chmod -v a+wt $LFS/sources
 WORKDIR $LFS/sources
 
 # create tools directory and symlink
 RUN mkdir -pv $LFS/tools \
- && ln -sv $LFS/tools /
+ && ln    -sv $LFS/tools /
 
 # copy scripts
 COPY [ "scripts/prepare/", "scripts/build/", "scripts/image/", "$LFS/tools/" ]

@@ -12,3 +12,8 @@ DISTRIB_RELEASE="8.1"
 DISTRIB_CODENAME="reinterpretcat"
 DISTRIB_DESCRIPTION="Linux From Scratch"
 EOF
+
+# define empty password for root
+cat > /etc/shadow << "EOF"
+root::12699:0:::::
+EOF
