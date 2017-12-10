@@ -1,14 +1,20 @@
 #!/bin/bash
 
-### Global ###
+### Prepare & Build ###
+
+# Defines how toolchain is fetched
+# 0 use LFS wget file
+# 1 use binaries from toolchain folder
+# 2 use github release artifacts
+FETCH_TOOLCHAIN_MODE=0
 
 # set 1 to run tests; running tests takes much more time
 LFS_TEST=0
+
 # degree of parallelism for compilation
 JOB_COUNT=1
 
-
-### Boot settings ###
+### Image ###
 
 # loop device
 LOOP=/dev/loop2

@@ -1,16 +1,15 @@
 #!/bin/bash
 set -e
-echo "Running build.."
-
+echo "Start.."
 . /tools/.variables
 
-sh /tools/run-prepare.sh
+/tools/run-prepare.sh
 
-# return to root
-exit
+# execute rest as root
+exec sudo -E -u root /bin/sh - << EOF
 #  change ownership
 chown -R root:root $LFS/tools
 
-sh /tools/run-build.sh
-
-#sh /tools/run-boot.sh
+/tools/run-build.sh
+/tools/run-image.sh
+EOF

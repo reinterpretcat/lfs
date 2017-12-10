@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     gawk                                 \
     texinfo                              \
     wget                                 \
+    sudo                                 \
  && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
 
@@ -47,15 +48,22 @@ RUN chmod +x $LFS/tools/*.sh    \
 RUN groupadd lfs                                    \
  && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
  && echo "lfs:lfs" | chpasswd
+RUN adduser lfs sudo
 
 # give lfs user ownership of directories
 RUN chown -v lfs $LFS/tools  \
  && chown -v lfs $LFS/sources
 
+# avoid sudo password
+RUN echo "lfs ALL = NOPASSWD : ALL" >> /etc/sudoers
+
  # login as lfs user
 USER lfs
 COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
+
+# use local binaries if present
+COPY ["toolchain/", "$LFS/sources/"]
 
 # let's the party begin
 ENTRYPOINT [ "/tools/run-all.sh" ]

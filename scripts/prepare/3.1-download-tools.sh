@@ -1,18 +1,40 @@
 #!/bin/bash
 set -e
-echo "Download toolchain.."
+echo "Downloading toolchain.."
 
-
-echo "Getting wget-list.."
-wget --quiet --timestamping http://www.linuxfromscratch.org/lfs/view/8.1-systemd/wget-list
-
-echo "Getting packages.."
-wget --quiet --timestamping --directory-prefix=$LFS/sources --continue --input-file=wget-list
-
-echo "Getting md5.."
-wget --quiet --timestamping http://www.linuxfromscratch.org/lfs/downloads/8.1/md5sums
-
-echo "Check hashes.."
 pushd $LFS/sources
-md5sum -c md5sums
+
+case "$FETCH_TOOLCHAIN_MODE" in
+  "0")
+    echo "Downloading LFS packages.."
+    echo "Getting wget-list.."
+    wget --timestamping http://www.linuxfromscratch.org/lfs/view/8.1/wget-list
+
+    echo "Getting packages.."
+    wget --timestamping --continue --input-file=wget-list
+
+    echo "Getting md5.."
+    wget --timestamping http://www.linuxfromscratch.org/lfs/downloads/8.1/md5sums
+
+    echo "Check hashes.."
+    md5sum -c md5sums
+
+    echo "Downloading syslinux package.."
+    wget --timestamping https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.xz
+    echo "Check hash.."
+    echo "26d3986d2bea109d5dc0e4f8c4822a459276cf021125e8c9f23c3cca5d8c850e $LFS/sources/syslinux-6.03.tar.xz" | sha256sum -c -
+    ;;
+  "1")
+    echo "Assume toolchain from host"
+    ;;
+  "2")
+    wget --timestamping https://github.com/reinterpretcat/lfs/releases/download/8.1/toolchain.tar.xz
+    tar -xvf /sources/toolchain.tar.xz
+
+    ;;
+  *)
+    echo "Undefined way to get toolchain!"
+    ;;
+esac
+
 popd
