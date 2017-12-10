@@ -5,19 +5,18 @@ echo "Setup general network configuration.."
 # 7.5.1 create a sample file for the wlp3s0 device with a static IP address
 # TODO make params configurable
 cd /etc/sysconfig/
-cat > ifconfig.wlp3s0 << "EOF"
+cat > ifconfig.eth0 << "EOF"
 ONBOOT=yes
-IFACE=wlp3s0
+IFACE=eth0
 SERVICE=ipv4-static
-IP=192.168.1.2
-GATEWAY=192.168.1.1
+IP=10.0.2.15
+GATEWAY=10.0.2.2
 PREFIX=24
-BROADCAST=192.168.1.255
+BROADCAST=10.0.2.255
 EOF
 
 # 7.5.2 DNS configuration
 cat > /etc/resolv.conf << "EOF"
-#domain <Your Domain Name>
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 EOF
