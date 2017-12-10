@@ -2,6 +2,9 @@
 
 ### Prepare & Build ###
 
+export LC_ALL=POSIX
+export LFS_TGT=$(uname -m)-lfs-linux-gnu
+
 # Defines how toolchain is fetched
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
