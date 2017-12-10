@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building mpc.."
+echo "Building gcc.."
 echo "Approximate build time: 82 SBU"
 echo "Required disk space: 3.2 GB"
 
