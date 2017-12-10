@@ -11,6 +11,9 @@ FETCH_TOOLCHAIN_MODE=0
 # set 1 to run tests; running tests takes much more time
 LFS_TEST=0
 
+# set 1 to install documentation; slightly increases final size
+LFS_DOCS=0
+
 # degree of parallelism for compilation
 JOB_COUNT=1
 
@@ -19,6 +22,7 @@ JOB_COUNT=1
 # loop device
 LOOP=/dev/loop2
 # inital ram disk size in KB
+# must be in sync with CONFIG_BLK_DEV_RAM_SIZE
 IMAGE_SIZE="700000"
 # location of initrd tree
 INITRD_TREE=$LFS

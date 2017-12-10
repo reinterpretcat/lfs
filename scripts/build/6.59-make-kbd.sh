@@ -20,8 +20,10 @@ make
 if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # install docs
-mkdir -v /usr/share/doc/kbd-2.0.4
-cp -R -v docs/doc/* /usr/share/doc/kbd-2.0.4
+if [ $LFS_DOCS -eq 1 ]; then
+  mkdir -v /usr/share/doc/kbd-2.0.4
+  cp -R -v docs/doc/* /usr/share/doc/kbd-2.0.4
+fi
 # cleanup
 popd \
   && rm -rf /tmp/kbd

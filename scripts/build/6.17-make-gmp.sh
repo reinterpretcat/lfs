@@ -21,7 +21,7 @@ if [ $LFS_TEST -eq 1 ]; then
 fi
 # continue with installation
 make install
-make install-html
+if [ $LFS_DOCS -eq 1 ]; then make install-html; fi
 
 popd \
   && rm -rf /tmp/gmp

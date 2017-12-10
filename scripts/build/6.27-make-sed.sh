@@ -17,8 +17,10 @@ make
 make html
 if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
-install -d -m755           /usr/share/doc/sed-4.4
-install -m644 doc/sed.html /usr/share/doc/sed-4.4
+if [ $LFS_DOCS -eq 1 ]; then
+  install -d -m755           /usr/share/doc/sed-4.4
+  install -m644 doc/sed.html /usr/share/doc/sed-4.4
+fi
 # cleanup
 popd \
   && rm -rf /tmp/sed

@@ -14,8 +14,10 @@ make
 if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # install docs
-mkdir -v /usr/share/doc/gawk-4.1.4
-cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} /usr/share/doc/gawk-4.1.4
+if [ $LFS_DOCS -eq 1 ]; then
+  mkdir -v /usr/share/doc/gawk-4.1.4
+  cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} /usr/share/doc/gawk-4.1.4
+fi
 # cleanup
 popd \
   && rm -rf /tmp/gawk

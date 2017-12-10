@@ -17,7 +17,9 @@ make
 if [ $LFS_TEST -eq 1 ]; then make check; fi
 make install
 # install docs
-install -v -dm755 /usr/share/doc/expat-2.2.3
-install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.3
+if [ $LFS_DOCS -eq 1 ]; then
+  install -v -dm755 /usr/share/doc/expat-2.2.3
+  install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.3
+fi
 popd \
   && rm -rf /tmp/expat

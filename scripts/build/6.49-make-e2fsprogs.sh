@@ -32,9 +32,11 @@ chmod -v u+w /usr/lib/{libcom_err,libe2p,libext2fs,libss}.a
 gunzip -v /usr/share/info/libext2fs.info.gz
 install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info
 # create and install some additional documentation
-makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
-install -v -m644 doc/com_err.info /usr/share/info
-install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
+if [ $LFS_DOCS -eq 1 ]; then
+  makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
+  install -v -m644 doc/com_err.info /usr/share/info
+  install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
+fi
 # cleanup
 popd \
   && rm -rf /tmp/e2fsprogs
