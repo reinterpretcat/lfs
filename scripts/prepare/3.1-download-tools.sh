@@ -25,7 +25,7 @@ case "$FETCH_TOOLCHAIN_MODE" in
     echo "26d3986d2bea109d5dc0e4f8c4822a459276cf021125e8c9f23c3cca5d8c850e $LFS/sources/syslinux-6.03.tar.xz" | sha256sum -c -
     ;;
   "1")
-    echo "Assume toolchain from host"
+    echo "Assume toolchain from host is already placed in sources folder"
     ;;
   "2")
     wget --timestamping https://github.com/reinterpretcat/lfs/releases/download/8.1/toolchain.tar.xz
