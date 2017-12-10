@@ -12,3 +12,5 @@ mkisofs -o lfs.iso                \
         -no-emul-boot             \
         -boot-load-size 4         \
         -boot-info-table CD_root
+
+echo "Image built in $(pwd)"

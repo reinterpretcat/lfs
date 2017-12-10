@@ -10,6 +10,8 @@ mv /tmp/syslinux-* /tmp/syslinux
 # copy needed syslinux binaries
 cp /tmp/syslinux/bios/core/isolinux.bin isolinux/isolinux.bin
 cp /tmp/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32 isolinux/ldlinux.c32
+# cleanup
+rm -rf /tmp/syslinux
 
 cat > isolinux/isolinux.cfg << "EOF"
 PROMT 0
