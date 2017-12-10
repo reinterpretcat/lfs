@@ -2,8 +2,8 @@
 set -e
 echo -n "Building bootable iso.... "
 
-# move kernel to isolinux folder
-mv $LFS/boot/vmlinuz-* isolinux/vmlinuz
+# copy kernel to isolinux folder
+cp $LFS/boot/vmlinuz-* isolinux/vmlinuz
 
 # build iso
 mkisofs -o lfs.iso                \
