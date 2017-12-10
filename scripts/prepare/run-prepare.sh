@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 echo "Preparing environment.."
+
 . /tools/.variables
 
 # download toolchain
