@@ -70,6 +70,10 @@ RUN echo "lfs ALL = NOPASSWD : ALL" >> /etc/sudoers
 USER lfs
 COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
+ENV LC_ALL=POSIX               \
+ LFS_TGT=x86_64-lfs-linux-gnu  \
+ PATH=/tools/bin:/bin:/usr/bin \
+ MAKEFLAGS="-j 1"
 
 # let's the party begin
 ENTRYPOINT [ "/tools/run-all.sh" ]
