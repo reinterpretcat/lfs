@@ -6,25 +6,25 @@
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
 # 2 use github release artifacts
-FETCH_TOOLCHAIN_MODE=0
+export FETCH_TOOLCHAIN_MODE=0
 
 # set 1 to run tests; running tests takes much more time
-LFS_TEST=0
+export LFS_TEST=0
 
 # set 1 to install documentation; slightly increases final size
-LFS_DOCS=0
+export LFS_DOCS=0
 
 # degree of parallelism for compilation
-JOB_COUNT=1
+export JOB_COUNT=1
 
 ### Image ###
 
 # loop device
-LOOP=/dev/loop2
+export LOOP=/dev/loop2
 # inital ram disk size in KB
 # must be in sync with CONFIG_BLK_DEV_RAM_SIZE
-IMAGE_SIZE="700000"
+export IMAGE_SIZE="700000"
 # location of initrd tree
-INITRD_TREE=$LFS
+export INITRD_TREE=$LFS
 # output image
-IMAGE=isolinux/ramdisk.img
+export IMAGE=isolinux/ramdisk.img

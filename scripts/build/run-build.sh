@@ -4,7 +4,7 @@ echo "Running build.."
 . /tools/.variables
 
 # prepartion
-sh /tools/6.2-prepare-vkfs.sh
+/tools/6.2-prepare-vkfs.sh
 
 # enter and continue in chroot environment with tools
 chroot "$LFS" /tools/bin/env -i                 \
@@ -24,4 +24,4 @@ chroot "$LFS" /usr/bin/env -i            \
   -c "sh /tools/as-chroot-with-usr.sh"
 
 # cleanup
-sh /tools/9.x-cleanup.sh
+/tools/9.x-cleanup.sh

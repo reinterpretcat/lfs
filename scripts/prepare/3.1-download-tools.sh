@@ -34,6 +34,7 @@ case "$FETCH_TOOLCHAIN_MODE" in
     ;;
   *)
     echo "Undefined way to get toolchain!"
+    false
     ;;
 esac
 

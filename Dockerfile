@@ -33,6 +33,9 @@ WORKDIR $LFS/sources
 RUN mkdir -pv $LFS/tools   \
  && ln    -sv $LFS/tools /
 
+ # copy local binaries if present
+ COPY ["toolchain/", "$LFS/sources/"]
+
 # copy scripts
 COPY [ "scripts/run-all.sh", "scripts/prepare/", "scripts/build/", "scripts/image/", "$LFS/tools/" ]
 # copy configuration
@@ -61,9 +64,6 @@ RUN echo "lfs ALL = NOPASSWD : ALL" >> /etc/sudoers
 USER lfs
 COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
-
-# use local binaries if present
-COPY ["toolchain/", "$LFS/sources/"]
 
 # let's the party begin
 ENTRYPOINT [ "/tools/run-all.sh" ]

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 echo "Start.."
-. /tools/.variables
 
+# prepare to build
 /tools/run-prepare.sh
 
 # execute rest as root
