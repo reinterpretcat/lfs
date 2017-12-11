@@ -27,16 +27,11 @@ popd
 # show statistics
 df loop2
 
-# unmount and divorce ${LOOP}
-umount loop2
-losetup -d ${LOOP}
-
-# delete any existing one
-rm -f $IMAGE
-
-echo -n "Compressing system ramdisk image.... "
+echo "Compressing system ramdisk image.."
 bzip2 -c ramdisk > $IMAGE
 
 # cleanup
-rm -f ramdisk
+umount loop2
+losetup -d ${LOOP}
 rm  -rf loop2
+rm -f ramdisk

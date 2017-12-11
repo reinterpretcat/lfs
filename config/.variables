@@ -26,7 +26,7 @@ export JOB_COUNT=1
 export LOOP=/dev/loop2
 # inital ram disk size in KB
 # must be in sync with CONFIG_BLK_DEV_RAM_SIZE
-export IMAGE_SIZE=300000
+export IMAGE_SIZE=800000
 # location of initrd tree
 export INITRD_TREE=$LFS
 # output image
