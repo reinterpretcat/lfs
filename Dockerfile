@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     texinfo                              \
     wget                                 \
     sudo                                 \
+    genisoimage                          \
  && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
 
