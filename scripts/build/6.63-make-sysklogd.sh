@@ -16,7 +16,7 @@ make
 # install
 make BINDIR=/sbin install
 # 6.63.2. Configuring Sysklogd
-cat > /etc/syslog.conf << "EOF"
+cat > /etc/syslog.conf <<"EOF"
 # Begin /etc/syslog.conf
 auth,authpriv.* -/var/log/auth.log
 *.*;auth,authpriv.none -/var/log/sys.log

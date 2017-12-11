@@ -35,7 +35,7 @@ cp -r Documentation/* /usr/share/doc/linux-4.12.7
 
 # 8.3.2. configure linux module load order
 install -v -m755 -d /etc/modprobe.d
-cat > /etc/modprobe.d/usb.conf << "EOF"
+cat > /etc/modprobe.d/usb.conf <<"EOF"
 install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true
 install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
 EOF

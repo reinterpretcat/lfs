@@ -3,7 +3,7 @@ set -e
 echo "Creating fstab.."
 
 # 8.2 Creating /etc/fstab
-cat > /etc/fstab << "EOF"
+cat > /etc/fstab <<"EOF"
 # file system   mount-point   type      options               dump  fsck
 #                                                                   order
 

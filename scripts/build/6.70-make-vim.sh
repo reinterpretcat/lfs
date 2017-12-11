@@ -25,7 +25,7 @@ for L in /usr/share/man/{,*/}man1/vim.1; do
 done
 ln -sv ../vim/vim80/doc /usr/share/doc/vim-8.0.586
 # 6.70.2. Configuring Vim
-cat > /etc/vimrc << "EOF"
+cat > /etc/vimrc <<"EOF"
 " Begin /etc/vimrc
 set nocompatible
 set backspace=2

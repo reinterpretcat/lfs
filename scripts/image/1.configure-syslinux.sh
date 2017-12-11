@@ -11,7 +11,7 @@ cp /tmp/syslinux/bios/com32/elflink/ldlinux/ldlinux.c32 isolinux/ldlinux.c32
 # cleanup
 rm -rf /tmp/syslinux
 
-cat > isolinux/isolinux.cfg << "EOF"
+cat > isolinux/isolinux.cfg <<"EOF"
 PROMT 0
 
 DEFAULT arch

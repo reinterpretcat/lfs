@@ -3,7 +3,7 @@ set -e
 echo "Setup bash shell.."
 
 # 7.8 create inputrc file
-cat > /etc/inputrc << "EOF"
+cat > /etc/inputrc <<"EOF"
 # Modified by Chris Lynn <roryo@roryo.dynup.net>
 # Allow the command prompt to wrap to the next line
 set horizontal-scroll-mode Off
@@ -36,7 +36,7 @@ set bell-style none
 EOF
 
 # create shells file
-cat > /etc/shells << "EOF"
+cat > /etc/shells <<"EOF"
 /bin/sh
 /bin/bash
 EOF

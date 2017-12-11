@@ -2,11 +2,11 @@
 
 ## Description
 
-This repository contains docker configuration to build LFS system currently based on [LFS book version 8.1](http://www.linuxfromscratch.org/lfs/downloads/8.1/LFS-BOOK-8.1.pdf).
+This repository contains docker configuration to build bootable iso image with [Linux From Scratch 8.1](http://www.linuxfromscratch.org/lfs/downloads/8.1/LFS-BOOK-8.1.pdf).
 
-## Status
+## Why
 
-Work in progress.
+General idea is to learn Linux by building and running LFS system in isolation from the host system.
 
 ## Structure
 
@@ -25,7 +25,7 @@ Please note, that extended privileges are required by docker container in order 
 
 ## Usage
 
-Final result is bootable iso image with LFS system which, for example, can be used to load the system inside virtual machine (tested with VirtualBox). This differs from then LFS system built by following book's instructions strictly.
+Final result is bootable iso image with LFS system which, for example, can be used to load the system inside virtual machine (tested with VirtualBox).
 
 ## License
 

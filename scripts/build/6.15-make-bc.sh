@@ -9,7 +9,7 @@ tar -xf /sources/bc-*.tar.gz -C /tmp/ \
   && mv /tmp/bc-* /tmp/bc \
   && pushd /tmp/bc
 # use sed instead of ed
-cat > bc/fix-libmath_h << "EOF"
+cat > bc/fix-libmath_h <<"EOF"
 #! /bin/bash
 sed -e '1 s/^/{"/'  \
     -e 's/$/",/'    \

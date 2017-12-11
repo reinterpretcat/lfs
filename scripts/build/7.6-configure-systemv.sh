@@ -3,7 +3,7 @@ set -e
 echo "Setup system V bootscript configuration.."
 
 # 7.6.2 configure sysvinit
-cat > /etc/inittab << "EOF"
+cat > /etc/inittab <<"EOF"
 id:3:initdefault:
 
 si::sysinit:/etc/rc.d/init.d/rc S
@@ -29,7 +29,7 @@ su:S016:once:/sbin/sulogin
 EOF
 
 # 7.6.4 configure system clock
-cat > /etc/sysconfig/clock << "EOF"
+cat > /etc/sysconfig/clock <<"EOF"
 UTC=1
 # Set this to any options you might need to give to hwclock,
 # such as machine hardware clock type for Alphas.
@@ -40,7 +40,7 @@ EOF
 echo "Skip keyboard map configuraion"
 
 # 7.6.8 configure rc.site
-cat > /etc/sysconfig/rc.site << "EOF"
+cat > /etc/sysconfig/rc.site <<"EOF"
 # rc.site
 # Optional parameters for boot scripts.
 # Distro Information

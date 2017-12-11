@@ -18,7 +18,7 @@ ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
 
 # configure root
-cat > /etc/passwd << "EOF"
+cat > /etc/passwd <<"EOF"
 root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
 daemon:x:6:6:Daemon User:/dev/null:/bin/false
@@ -34,7 +34,7 @@ systemd-coredump:x:79:79:systemd Core Dumper:/:/bin/false
 nobody:x:99:99:Unprivileged User:/dev/null:/bin/false
 EOF
 
-cat > /etc/group << "EOF"
+cat > /etc/group <<"EOF"
 root:x:0:
 bin:x:1:daemon
 sys:x:2:

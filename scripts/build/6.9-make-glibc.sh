@@ -77,7 +77,7 @@ rm -rf /tmp/glibc
 
 # 6.9.2. Configuring Glibc
 # 6.9.2.1. Adding nsswitch.conf
-cat > /etc/nsswitch.conf << "EOF"
+cat > /etc/nsswitch.conf <<"EOF"
 # Begin /etc/nsswitch.conf
 passwd: files
 group: files
@@ -112,12 +112,12 @@ popd && rm -rf /tmp/tzdata
 ln -sfv /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # 6.9.2.3. Configuring the Dynamic Loader
-cat > /etc/ld.so.conf << "EOF"
+cat > /etc/ld.so.conf <<"EOF"
 # Begin /etc/ld.so.conf
 /usr/local/lib
 /opt/lib
 EOF
-cat >> /etc/ld.so.conf << "EOF"
+cat >> /etc/ld.so.conf <<"EOF"
 # Add an include directory
 include /etc/ld.so.conf.d/*.conf
 EOF

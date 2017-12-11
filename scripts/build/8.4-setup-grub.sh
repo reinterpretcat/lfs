@@ -12,7 +12,7 @@ echo "NOTE: skipped. Check 8.4 chapter of LFS book for details"
 #grub-install /dev/sda
 
 ## create grub config
-#cat > /boot/grub/grub.cfg << "EOF"
+#cat > /boot/grub/grub.cfg <<"EOF"
 #set default=0
 #set timeout=5
 #insmod ext2

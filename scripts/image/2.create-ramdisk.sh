@@ -39,3 +39,4 @@ bzip2 -c ramdisk > $IMAGE
 
 # cleanup
 rm -f ramdisk
+rm  -rf loop2

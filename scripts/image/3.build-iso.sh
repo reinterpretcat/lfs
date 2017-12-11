@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo -n "Building bootable iso.... "
+echo "Building bootable iso.."
 
 # copy kernel to isolinux folder
 cp $LFS/boot/vmlinuz-* isolinux/vmlinuz
@@ -11,6 +11,6 @@ genisoimage -o lfs.iso                \
             -c isolinux/boot.cat      \
             -no-emul-boot             \
             -boot-load-size 4         \
-            -boot-info-table CD_root
+            -boot-info-table .
 
-echo "Your image is located: $(pwd)/lfs.iso"
+echo "Image is created: $(pwd)/lfs.iso"
