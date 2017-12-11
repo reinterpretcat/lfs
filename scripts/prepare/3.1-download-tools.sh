@@ -28,9 +28,9 @@ case "$FETCH_TOOLCHAIN_MODE" in
     echo "Assume toolchain from host is already placed in sources folder"
     ;;
   "2")
-    wget --timestamping https://github.com/reinterpretcat/lfs/releases/download/8.1.0/toolchain.tar.gz
-    tar -xvf /sources/toolchain.tar.gz
-
+    wget --timestamping https://github.com/reinterpretcat/lfs/releases/download/v8.1.0/toolchain.tar.gz
+    tar -xvf toolchain.tar.gz
+    rm toolchain.tar.gz
     ;;
   *)
     echo "Undefined way to get toolchain!"
