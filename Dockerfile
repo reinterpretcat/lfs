@@ -30,7 +30,7 @@ ENV LFS_DOCS=0
 ENV JOB_COUNT=1
 
 # loop device
-ENV LOOP=/dev/loop2
+ENV LOOP=/dev/loop0
 
 # inital ram disk size in KB
 # must be in sync with CONFIG_BLK_DEV_RAM_SIZE
