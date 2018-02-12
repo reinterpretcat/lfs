@@ -2,6 +2,8 @@
 set -e
 echo "Creating ramdisk.."
 
+LOOP_DIR=$(pwd)/loop2
+
 # create ramdisk file of IMAGE_SIZE
 dd if=/dev/zero of=ramdisk bs=1k count=$IMAGE_SIZE
 
@@ -12,14 +14,13 @@ losetup ${LOOP} ramdisk
 mke2fs -q -i 16384 -m 0 ${LOOP} $IMAGE_SIZE
 
 # ensure loop2 directory
-[ -d  loop2 ] || mkdir loop2
+[ -d $LOOP_DIR ] || mkdir -pv $LOOP_DIR
 
 # mount it
-mount ${LOOP} loop2
-rm -rf loop2/lost+found
+mount ${LOOP} $LOOP_DIR
+rm -rf $LOOP_DIR/lost+found
 
 # copy LFS system without build artifacts
-LOOP_DIR=$(pwd)/loop2
 pushd $INITRD_TREE
 cp -dpR $(ls -A | grep -Ev "sources|tools") $LOOP_DIR
 popd

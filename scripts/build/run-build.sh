@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 echo "Running build.."
-. /tools/.variables
 
 # prepartion
 sh /tools/6.2-prepare-vkfs.sh
