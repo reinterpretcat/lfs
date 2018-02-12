@@ -11,7 +11,7 @@ ENV LFS=/mnt/lfs
 # Other LFS parameters
 ENV LC_ALL=POSIX
 ENV LFS_TGT=x86_64-lfs-linux-gnu
-ENV PATH=/tools/bin:/bin:/usr/bin:/sbin:/usr:sbin
+ENV PATH=/tools/bin:/bin:/usr/bin:/sbin:/usr/sbin
 ENV MAKEFLAGS="-j 1"
 
 # Defines how toolchain is fetched
