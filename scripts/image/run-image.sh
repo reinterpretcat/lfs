@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 echo "Start building bootable image.."
-. /tools/.variables
 
 pushd /tmp
 mkdir isolinux

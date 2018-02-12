@@ -8,6 +8,40 @@ LABEL maintainer="ilya.builuk@gmail.com"
 # LFS mount point
 ENV LFS=/mnt/lfs
 
+# Other LFS parameters
+ENV LC_ALL=POSIX
+ENV LFS_TGT=x86_64-lfs-linux-gnu
+ENV PATH=/tools/bin:/bin:/usr/bin:/sbin:/usr:sbin
+ENV MAKEFLAGS="-j 1"
+
+# Defines how toolchain is fetched
+# 0 use LFS wget file
+# 1 use binaries from toolchain folder
+# 2 use github release artifacts
+ENV FETCH_TOOLCHAIN_MODE=2
+
+# set 1 to run tests; running tests takes much more time
+ENV LFS_TEST=0
+
+# set 1 to install documentation; slightly increases final size
+ENV LFS_DOCS=0
+
+# degree of parallelism for compilation
+ENV JOB_COUNT=1
+
+# loop device
+ENV LOOP=/dev/loop0
+
+# inital ram disk size in KB
+# must be in sync with CONFIG_BLK_DEV_RAM_SIZE
+ENV IMAGE_SIZE=800000
+
+# location of initrd tree
+ENV INITRD_TREE=/mnt/lfs
+
+# output image
+ENV IMAGE=isolinux/ramdisk.img
+
 # set bash as default shell
 WORKDIR /bin
 RUN rm sh && ln -s bash sh
@@ -34,8 +68,8 @@ WORKDIR $LFS/sources
 RUN mkdir -pv $LFS/tools   \
  && ln    -sv $LFS/tools /
 
- # copy local binaries if present
- COPY ["toolchain/", "$LFS/sources/"]
+# copy local binaries if present
+COPY ["toolchain/", "$LFS/sources/"]
 
 # copy scripts
 COPY [ "scripts/run-all.sh",       \
@@ -46,7 +80,7 @@ COPY [ "scripts/run-all.sh",       \
        "scripts/image/",           \
   "$LFS/tools/" ]
 # copy configuration
-COPY [ "config/.variables",  "config/kernel.config", "$LFS/tools/" ]
+COPY [ "config/kernel.config", "$LFS/tools/" ]
 
 # check environment
 RUN chmod +x $LFS/tools/*.sh    \
@@ -66,15 +100,12 @@ RUN chown -v lfs $LFS/tools  \
 
 # avoid sudo password
 RUN echo "lfs ALL = NOPASSWD : ALL" >> /etc/sudoers
+RUN echo 'Defaults env_keep += "LFS LC_ALL LFS_TGT PATH MAKEFLAGS FETCH_TOOLCHAIN_MODE LFS_TEST LFS_DOCS JOB_COUNT LOOP IMAGE_SIZE INITRD_TREE IMAGE"' >> /etc/sudoers
 
- # login as lfs user
+# login as lfs user
 USER lfs
 COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
-ENV LC_ALL=POSIX               \
- LFS_TGT=x86_64-lfs-linux-gnu  \
- PATH=/tools/bin:/bin:/usr/bin \
- MAKEFLAGS="-j 1"
 
 # let's the party begin
 ENTRYPOINT [ "/tools/run-all.sh" ]

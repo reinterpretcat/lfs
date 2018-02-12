@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 echo "Continue with chroot environment.."
-. /tools/.variables
 
 # SKIP remove the "I have no name!" promp
 # exec /tools/bin/bash --login +h
