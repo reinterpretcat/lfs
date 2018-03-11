@@ -23,7 +23,7 @@ Use the following command:
     docker build --tag lfs:8.2 .                        && \
     sudo docker run -it --privileged --name lfs lfs:8.2 && \
     sudo docker cp lfs:/tmp/lfs.iso .
-    # Ramdisk you can fund here: /tmp/ramdisk.img
+    # Ramdisk you can find here: /tmp/ramdisk.img
 
 Please note, that extended privileges are required by docker container
 in order to execute some commands (e.g. mount).
