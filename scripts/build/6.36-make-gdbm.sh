@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building gdbm.."
+echo "Building GDBM.."
 echo "Approximate build time: 0.1 SBU"
 echo "Required disk space: 10 MB"
 

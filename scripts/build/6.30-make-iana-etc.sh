@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building iana-etc.."
+echo "Building Iana-Etc.."
 echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 2.3 MB"
 

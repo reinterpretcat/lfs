@@ -1,21 +1,23 @@
 #!/bin/bash
 set -e
-echo "Building bc.."
+echo "Building Bc.."
 echo "Approximate build time: 0.1 SBU"
-echo "Required disk space: 3.6 MB"
+echo "Required disk space: 3.7 MB"
 
-# 6.15. Bc package contains an arbitrary precision numeric processing language
+# 6.15. The Bc package contains an arbitrary precision numeric
+# processing language.
 tar -xf /sources/bc-*.tar.gz -C /tmp/ \
   && mv /tmp/bc-* /tmp/bc \
   && pushd /tmp/bc
-# use sed instead of ed
+# First, change an internal script to use sed instead of ed:
 cat > bc/fix-libmath_h <<"EOF"
 #! /bin/bash
-sed -e '1 s/^/{"/'  \
-    -e 's/$/",/'    \
-    -e '2,$ s/^/"/' \
-    -e '$ d'        \
+sed -e '1   s/^/{"/' \
+    -e     's/$/",/' \
+    -e '2,$ s/^/"/'  \
+    -e   '$ d'       \
     -i libmath.h
+
 sed -e '$ s/$/0}/' \
     -i libmath.h
 EOF

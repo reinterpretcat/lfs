@@ -1,25 +1,36 @@
 #!/bin/bash
 set -e
-echo "Building expat.."
-echo "Approximate build time: less than 0.1 SBU"
-echo "Required disk space: 9.5 MB"
+echo "Building Expat.."
+echo "Approximate build time: 0.1 SBU"
+echo "Required disk space: 11 MB"
 
-# 6.38. Expat package contains a stream oriented C library for parsing XML
+# 6.38. The Expat package contains a stream oriented C library for
+# parsing XML.
 tar -xf /sources/expat-*.tar.bz2 -C /tmp/ \
   && mv /tmp/expat-* /tmp/expat \
   && pushd /tmp/expat
-# fix a problem with the regession tests in the LFS environment
+
+# First fix a problem with the regession tests in the LFS environment
 sed -i 's|usr/bin/env |bin/|' run.sh.in
-# prepare for compilation
+
+# Prepare Expat for compilation:
 ./configure --prefix=/usr --disable-static
-# compile and install
+
+# Compile the package:
 make
+
+# To test the results, issue:
 if [ $LFS_TEST -eq 1 ]; then make check; fi
+
+# Install the package:
 make install
-# install docs
+
+# If desired, install the documentation:
 if [ $LFS_DOCS -eq 1 ]; then
-  install -v -dm755 /usr/share/doc/expat-2.2.3
-  install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.3
+  install -v -dm755 /usr/share/doc/expat-2.2.5
+  install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.5
 fi
+
+# Cleanup
 popd \
   && rm -rf /tmp/expat

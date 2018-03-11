@@ -2,7 +2,7 @@
 set -e
 echo "Building Linux API headers.."
 echo "Approximate build time: less than 0.1 SBU"
-echo "Required disk space: 865 MB"
+echo "Required disk space: 921 MB"
 
 # 6.7. Linux API Headers package exposes the kernel API for use by Glib
 tar -xf /sources/linux-*.tar.xz -C /tmp/ \

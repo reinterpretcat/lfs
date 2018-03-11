@@ -2,7 +2,7 @@
 set -e
 echo "Building libstdc.."
 echo "Approximate build time: 0.4 SBU"
-echo "Required disk space: 750 MB"
+echo "Required disk space: 752 MB"
 
 # 5.8. Libstdc++ is the standard C++ library. It is needed for
 # the correct operation of the g++ compile
@@ -18,7 +18,7 @@ tar -xf gcc-*.tar.xz -C /tmp/ \
      --disable-nls                   \
      --disable-libstdcxx-threads     \
      --disable-libstdcxx-pch         \
-     --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/7.2.0 \
+     --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/7.3.0 \
   && make \
   && make install \
   && popd \

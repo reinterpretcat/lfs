@@ -10,17 +10,25 @@ echo "Required disk space: 2.3 MB"
 tar -xf /sources/bzip2-*.tar.gz -C /tmp/ \
   && mv /tmp/bzip2-* /tmp/bzip2 \
   && pushd /tmp/bzip2
-# apply a patch that will install the documentation for this package
+
+# The following command ensures installation of symbolic links are relative
 patch -Np1 -i /sources/bzip2-1.0.6-install_docs-1.patch
-# ensure the man pages are installed into the correct location
+
+# Ensure the man pages are installed into the correct location
 sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
-# prepare for compilation
+
+# Prepare Bzip2 for compilation with:
 make -f Makefile-libbz2_so
 make clean
-# compile
+
+# Compile and test the package:
 make
+
+# Install the programs:
 make PREFIX=/usr install
-# install
+
+# Install the shared bzip2 binary into the /bin directory, make some
+# necessary symbolic links, and clean up:
 cp -v bzip2-shared /bin/bzip2
 cp -av libbz2.so* /lib
 ln -sv ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so
@@ -28,5 +36,6 @@ rm -v /usr/bin/{bunzip2,bzcat,bzip2}
 ln -sv bzip2 /bin/bunzip2
 ln -sv bzip2 /bin/bzcat
 
+# Cleanup
 popd \
   && rm -rf /tmp/bzip2

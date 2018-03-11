@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-echo "Building gmp.."
+echo "Building GMP.."
 echo "Approximate build time: 1.2 SBU"
-echo "Required disk space: 59 MB"
+echo "Required disk space: 60 MB"
 
 # 6.17. GMP package contains math libraries
 tar -xf /sources/gmp-*.tar.xz -C /tmp/ \

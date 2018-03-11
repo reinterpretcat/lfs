@@ -3,23 +3,23 @@ set -e
 echo "Finalize LFS configuration.."
 
 # LFS version file
-echo 8.1 > /etc/lfs-release
+echo 8.2 > /etc/lfs-release
 
 # LSB version file
-cat > /etc/lsb-release <<"EOF"
+cat > /etc/lsb-release << "EOF"
 DISTRIB_ID="Linux From Scratch"
-DISTRIB_RELEASE="8.1"
+DISTRIB_RELEASE="8.2"
 DISTRIB_CODENAME="reinterpretcat"
 DISTRIB_DESCRIPTION="Linux From Scratch"
 EOF
 
 # define empty password for root
-cat > /etc/shadow <<"EOF"
+cat > /etc/shadow << "EOF"
 root::12699:0:::::
 EOF
 
 # add login logo
-cat > /etc/issue <<"EOF"
+cat > /etc/issue << "EOF"
 [40m[40m
 [1;30;44m         [40m      [44m       [0;37;40m
 [1;30;44m        [40m        [44m      [0;37;40m  [1;41m   [0;40m [1;41m [0;40m   [1;41m [0;40m [1;41m [0;40m  [1;41m [0;40m     [1;32;42m [0;37;40m [1;30;47m  [0;37;40m     [1;30;47m      [0;37;40m [1;30;47m  [0;37;40m   [1;30;47m  [0;37;40m [1;30;47m  [0;37;40m  [1;30;47m  [0;37;40m [1;30;47m  [0;37;40m  [1;30;47m  [40m

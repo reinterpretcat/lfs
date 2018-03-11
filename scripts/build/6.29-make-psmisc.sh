@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building psmisc.."
+echo "Building Psmisc.."
 echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 4.2 MB"
 
