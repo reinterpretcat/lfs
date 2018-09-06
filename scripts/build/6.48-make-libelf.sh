@@ -10,7 +10,7 @@ tar -xf /sources/elfutils-*.tar.xz -C /tmp/ \
   && mv /tmp/elfutils-* /tmp/elfutils \
   && pushd /tmp/elfutils
 # prepare for compilation
-./configure ./configure --prefix=/usr
+./configure --prefix=/usr
 # compile, test and install
 make
 # run tests
