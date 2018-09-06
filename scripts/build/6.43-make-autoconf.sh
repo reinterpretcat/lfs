@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-echo "Building autoconf.."
-echo "Approximate build time: 3.3 SBU"
+echo "Building Autoconf.."
+echo "Approximate build time: less than 0.1 SBU (about 3.2 SBU with tests)"
 echo "Required disk space: 17.3 MB"
 
 # 6.43. Autoconf package contains programs for producing shell scripts

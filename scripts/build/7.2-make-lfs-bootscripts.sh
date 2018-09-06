@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building lfs bootscripts.."
+echo "Building LFS-Bootscripts.."
 echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 244 KB"
 

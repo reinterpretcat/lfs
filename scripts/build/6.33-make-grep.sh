@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-echo "Building grep.."
+echo "Building Grep.."
 echo "Approximate build time: 0.4 SBU"
-echo "Required disk space: 29 MB"
+echo "Required disk space: 30 MB"
 
 # 6.33. Grep package contains programs for searching through files
 tar -xf /sources/grep-*.tar.xz -C /tmp/ \

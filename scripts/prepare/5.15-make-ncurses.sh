@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-echo "Building ncurses.."
+echo "Building Ncurses.."
 echo "Approximate build time:  0.5 SBU"
-echo "Required disk space: 38 MB"
+echo "Required disk space: 41 MB"
 
 # 5.15. Ncurses package contains libraries for terminal-independent
 # handling of character screens

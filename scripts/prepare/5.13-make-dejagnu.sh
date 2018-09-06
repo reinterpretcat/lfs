@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Building deja GNU.."
+echo "Building DejaGNU.."
 echo "Approximate build time: less than 0.1 SBU"
 echo "Required disk space: 3.2 MB"
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
-echo "Building m4.."
+echo "Building M4.."
 echo "Approximate build time: 0.4 SBU"
-echo "Required disk space: 30 MB"
+echo "Required disk space: 31 MB"
 
-# 6.14. M4 package contains a macro processor
+# 6.14. The M4 package contains a macro processor.
 tar -xf /sources/m4-*.tar.xz -C /tmp/ \
   && mv /tmp/m4-* /tmp/m4 \
   && pushd /tmp/m4

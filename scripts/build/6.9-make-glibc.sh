@@ -10,29 +10,35 @@ tar -xf /sources/glibc-*.tar.xz -C /tmp/ \
  && pushd /tmp/glibc
 
 # 6.9.1. Installation of Glibc
-patch -Np1 -i /sources/glibc-2.26-fhs-1.patch \
+patch -Np1 -i /sources/glibc-2.27-fhs-1.patch
 ln -sfv /tools/lib/gcc /usr/lib
+
+# Determine the GCC include directory and create a symlink for LSB
+# compliance. Additionally, for x86_64, create a compatibility
+# symlink required for the dynamic loader to function correctly:
 case $(uname -m) in
- i?86)   GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/7.2.0/include
-         ln -sfv ld-linux.so.2 /lib/ld-lsb.so.3
- ;;
- x86_64) GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/include
-         ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64
-         ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64/ld-lsb-x86-64.so.3
- ;;
+    i?86)    GCC_INCDIR=/usr/lib/gcc/$(uname -m)-pc-linux-gnu/7.3.0/include
+            ln -sfv ld-linux.so.2 /lib/ld-lsb.so.3
+    ;;
+    x86_64) GCC_INCDIR=/usr/lib/gcc/x86_64-pc-linux-gnu/7.3.0/include
+            ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64
+            ln -sfv ../lib/ld-linux-x86-64.so.2 /lib64/ld-lsb-x86-64.so.3
+    ;;
 esac
-# remove a file that may be left over from a previous build attempt
+
+# Remove a file that may be left over from a previous build attempt
 rm -f /usr/include/limits.h
-# Glibc documentation recommends building Glibc in a dedicated build directory
+# The Glibc documentation recommends building Glibc in a dedicated
+# build directory:
 mkdir -v build
 cd build
 # prepare Glibc for compilation:
 CC="gcc -isystem $GCC_INCDIR -isystem /usr/include" \
 ../configure --prefix=/usr                          \
-  --disable-werror                                  \
-  --enable-kernel=3.2                               \
-  --enable-stack-protector=strong                   \
-  libc_cv_slibdir=/lib
+             --disable-werror                       \
+             --enable-kernel=3.2                    \
+             --enable-stack-protector=strong        \
+             libc_cv_slibdir=/lib
 unset GCC_INCDIR
 make
 if [ $LFS_TEST -eq 1 ]; then make check || true; fi
@@ -45,9 +51,6 @@ make install
 # install the configuration file and runtime directory for nscd
 cp -v ../nscd/nscd.conf /etc/nscd.conf
 mkdir -pv /var/cache/nscd
-# install the systemd support files for nscd
-install -v -Dm644 ../nscd/nscd.tmpfiles /usr/lib/tmpfiles.d/nscd.conf
-install -v -Dm644 ../nscd/nscd.service /lib/systemd/system/nscd.service
 # install the locales that can make the system respond in a different language
 mkdir -pv /usr/lib/locale
 localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8
@@ -79,15 +82,19 @@ rm -rf /tmp/glibc
 # 6.9.2.1. Adding nsswitch.conf
 cat > /etc/nsswitch.conf <<"EOF"
 # Begin /etc/nsswitch.conf
+
 passwd: files
 group: files
 shadow: files
+
 hosts: files dns
 networks: files
+
 protocols: files
 services: files
 ethers: files
 rpc: files
+
 # End /etc/nsswitch.conf
 EOF
 
@@ -98,16 +105,21 @@ mkdir /tmp/tzdata \
 
 ZONEINFO=/usr/share/zoneinfo
 mkdir -pv $ZONEINFO/{posix,right}
-for tz in etcetera southamerica northamerica europe africa antarctica \
+
+for tz in etcetera southamerica northamerica europe africa antarctica  \
           asia australasia backward pacificnew systemv; do
     zic -L /dev/null   -d $ZONEINFO       -y "sh yearistype.sh" ${tz}
     zic -L /dev/null   -d $ZONEINFO/posix -y "sh yearistype.sh" ${tz}
     zic -L leapseconds -d $ZONEINFO/right -y "sh yearistype.sh" ${tz}
 done
+
 cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
 zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO
-popd && rm -rf /tmp/tzdata
+
+popd && \
+  rm -rf /tmp/tzdata
+
 # set time zone info
 ln -sfv /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 

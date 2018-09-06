@@ -8,22 +8,29 @@ echo "Required disk space: 56 MB"
 tar -xf /sources/bash-*.tar.gz -C /tmp/ \
   && mv /tmp/bash-* /tmp/bash \
   && pushd /tmp/bash
-# incorporate some upstream fixes
-patch -Np1 -i /sources/bash-4.4-upstream_fixes-1.patch
+
 # prepare bash
-./configure --prefix=/usr            \
-    --docdir=/usr/share/doc/bash-4.4 \
-    --without-bash-malloc            \
+./configure --prefix=/usr               \
+    --docdir=/usr/share/doc/bash-4.4.18 \
+    --without-bash-malloc               \
     --with-installed-readline
-# compile
+
+# Compile the package
 make
-# ensure that the nobody user can write to the sources tree
-chown -Rv nobody .
-# run the tests as the nobody user
-su nobody -s /bin/bash -c "PATH=$PATH make tests"
-# install
+
+# Run tests
+if [ $LFS_TEST -eq 1 ]
+    then
+    # To prepare the tests, ensure that the nobody user can write to the sources tree
+    chown -Rv nobody .
+    # Now, run the tests as the nobody user:
+    su nobody -s /bin/bash -c "PATH=$PATH make tests"
+fi
+
+# Install the package and move the main executable to /bin
 make install
 mv -vf /usr/bin/bash /bin
+
 # cleanup
 popd \
   && rm -rf /tmp/bash

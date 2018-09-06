@@ -2,7 +2,7 @@ FROM debian:8
 
 # image info
 LABEL description="Automated LFS build"
-LABEL version="8.1"
+LABEL version="8.2"
 LABEL maintainer="ilya.builuk@gmail.com"
 
 # LFS mount point
@@ -18,7 +18,7 @@ ENV MAKEFLAGS="-j 1"
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
 # 2 use github release artifacts
-ENV FETCH_TOOLCHAIN_MODE=2
+ENV FETCH_TOOLCHAIN_MODE=1
 
 # set 1 to run tests; running tests takes much more time
 ENV LFS_TEST=0

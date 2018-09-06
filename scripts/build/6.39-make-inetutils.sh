@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
-echo "Building inetutils.."
+echo "Building Inetutils.."
 echo "Approximate build time: 0.3 SBU"
-echo "Required disk space: 27 MB"
+echo "Required disk space: 28 MB"
 
-# 6.39. Inetutils package contains programs for basic networking
+# 6.39. The Inetutils package contains programs for basic networking.
 tar -xf /sources/inetutils-*.tar.xz -C /tmp/ \
   && mv /tmp/inetutils-* /tmp/inetutils \
   && pushd /tmp/inetutils

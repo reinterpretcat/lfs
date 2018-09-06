@@ -2,7 +2,7 @@
 set -e
 echo "Building gperf.."
 echo "Approximate build time: less than 0.1 SBU"
-echo "Required disk space: 5.8 MB"
+echo "Required disk space: 5.9 MB"
 
 # 6.37. Gperf generates a perfect hash function from a key set
 tar -xf /sources/gperf-*.tar.gz -C /tmp/ \

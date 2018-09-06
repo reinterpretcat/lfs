@@ -32,7 +32,10 @@ df $LOOP_DIR
 echo "Compressing system ramdisk image.."
 bzip2 -c $RAMDISK > $IMAGE
 
-# cleanup
+# Copy compressed image to /tmp dir (need for dockerhub)
+cp -v $IMAGE .
+
+# Cleanup
 umount $LOOP_DIR
 losetup -d $LOOP
 rm -rf $LOOP_DIR

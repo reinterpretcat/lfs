@@ -2,7 +2,7 @@
 set -e
 echo "Building expect.."
 echo "Approximate build time: 0.1 SBU"
-echo "Required disk space: 4.3 MB"
+echo "Required disk space: 3.9 MB"
 
 # 5.12. Expect package contains a program for carrying out scripted
 # dialogues with other interactive programs

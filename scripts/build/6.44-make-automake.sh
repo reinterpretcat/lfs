@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-echo "Building automake.."
-echo "Approximate build time: SBU"
-echo "Required disk space:  MB"
+echo "Building Automake.."
+echo "Approximate build time: less than 0.1 SBU (about 8.4 SBU with tests)"
+echo "Required disk space: 109 MB"
 
 # 6.44. Automake package contains programs for generating Makefiles
 # for use with Autoconf
