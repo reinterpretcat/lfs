@@ -1,9 +1,11 @@
-FROM debian:8
+# FROM debian:8
+FROM archlinux/base 
 
 # image info
 LABEL description="Automated LFS build"
 LABEL version="8.2"
-LABEL maintainer="ilya.builuk@gmail.com"
+# LABEL maintainer="ilya.builuk@gmail.com"
+LABEL maintainer="matthewbegun@gmail.com"
 
 # LFS mount point
 ENV LFS=/mnt/lfs
@@ -18,13 +20,13 @@ ENV MAKEFLAGS="-j 1"
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
 # 2 use github release artifacts
-ENV FETCH_TOOLCHAIN_MODE=1
+ENV FETCH_TOOLCHAIN_MODE=0
 
 # set 1 to run tests; running tests takes much more time
 ENV LFS_TEST=0
 
 # set 1 to install documentation; slightly increases final size
-ENV LFS_DOCS=0
+ENV LFS_DOCS=1
 
 # degree of parallelism for compilation
 ENV JOB_COUNT=1
@@ -42,22 +44,33 @@ ENV INITRD_TREE=/mnt/lfs
 # output image
 ENV IMAGE=isolinux/ramdisk.img
 
-# set bash as default shell
-WORKDIR /bin
-RUN rm sh && ln -s bash sh
+# # set bash as default shell
+# WORKDIR /bin
+# RUN rm sh && ln -s bash sh
 
-# install required packages
-RUN apt-get update && apt-get install -y \
-    build-essential                      \
-    bison                                \
-    file                                 \
-    gawk                                 \
-    texinfo                              \
-    wget                                 \
-    sudo                                 \
-    genisoimage                          \
- && apt-get -q -y autoremove             \
- && rm -rf /var/lib/apt/lists/*
+# # install required packages
+# RUN apt-get update && apt-get install -y \
+    # build-essential                      \
+    # bison                                \
+    # file                                 \
+    # gawk                                 \
+    # texinfo                              \
+    # wget                                 \
+    # sudo                                 \
+    # genisoimage                          \
+ # && apt-get -q -y autoremove             \
+ # && rm -rf /var/lib/apt/lists/*
+
+# update keys and system
+RUN pacman-key --init && \
+ pacman-key --populate && \
+ pacman --noconfirm -Syyu && \
+ pacman --noconfirm -Syu --needed \
+ base \
+ base-devel \
+ python \
+ wget \
+ cdrtools 
 
 # create sources directory as writable and sticky
 RUN mkdir -pv     $LFS/sources \
@@ -92,7 +105,7 @@ RUN chmod +x $LFS/tools/*.sh    \
 RUN groupadd lfs                                    \
  && useradd -s /bin/bash -g lfs -m -k /dev/null lfs \
  && echo "lfs:lfs" | chpasswd
-RUN adduser lfs sudo
+# RUN adduser lfs sudo
 
 # give lfs user ownership of directories
 RUN chown -v lfs $LFS/tools  \
@@ -108,4 +121,4 @@ COPY [ "config/.bash_profile", "config/.bashrc", "/home/lfs/" ]
 RUN source ~/.bash_profile
 
 # let's the party begin
-ENTRYPOINT [ "/tools/run-all.sh" ]
+# ENTRYPOINT [ "/tools/run-all.sh" ]
