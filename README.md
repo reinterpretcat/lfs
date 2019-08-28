@@ -5,6 +5,11 @@
 This repository contains docker configuration to build bootable iso
 image with [Linux From Scratch 8.2](http://www.linuxfromscratch.org/lfs/downloads/8.2/LFS-BOOK-8.2.pdf).
 
+
+## Status
+
+At the moment, I don't have plans to update scripts to the latest LFS versions. However, pull requests are welcomed.
+
 ## Why
 
 General idea is to learn Linux by building and running LFS system in
@@ -33,6 +38,10 @@ in order to execute some commands (e.g. mount).
 Final result is bootable iso image with LFS system which, for
 example, can be used to load the system inside virtual machine (tested
 with VirtualBox).
+
+## Troubleshooting
+
+If you have problems with master branch, please try to use stable version from the latest release with toolchain from archive.
 
 ## License
 
