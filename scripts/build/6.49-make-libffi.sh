@@ -8,7 +8,7 @@ echo "Required disk space: 7.6 MB"
 # interface to various calling conventions. This allows a programmer
 # to call any function specified by a call interface description at
 # run time.
-tar -xf /sources/libffi-*.tar.xz -C /tmp/ \
+tar -xf /sources/libffi-*.tar.gz -C /tmp/ \
   && mv /tmp/libffi-* /tmp/libffi \
   && pushd /tmp/libffi
 # Modify the Makefile to install headers into the standard /usr/include directory instead of /usr/lib/libffi-3.2.1/include.

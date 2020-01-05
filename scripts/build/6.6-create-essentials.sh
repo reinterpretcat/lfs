@@ -6,12 +6,6 @@ ln -sv /tools/bin/{bash,cat,dd,echo,ln,pwd,rm,stty} /bin
 ln -sv /tools/bin/{install,perl} /usr/bin
 ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
 ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib
-
-for lib in blkid lzma mount uuid
-do
-  ln -sv /tools/lib/lib$lib.{a,so*} /usr/lib
-  sed 's/tools/usr/' /tools/lib/lib${lib}.la > /usr/lib/lib${lib}.la
-done
 ln -sv bash /bin/sh
 
 # create symlink for list of the mounted file systems

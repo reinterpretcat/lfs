@@ -34,7 +34,7 @@ ENV LOOP=/dev/loop0
 
 # inital ram disk size in KB
 # must be in sync with CONFIG_BLK_DEV_RAM_SIZE
-ENV IMAGE_SIZE=800000
+ENV IMAGE_SIZE=900000
 
 # location of initrd tree
 ENV INITRD_TREE=/mnt/lfs
@@ -56,6 +56,9 @@ RUN apt-get update && apt-get install -y \
     wget                                 \
     sudo                                 \
     genisoimage                          \
+    libelf-dev                           \
+    bc                                   \
+    libssl-dev                           \
  && apt-get -q -y autoremove             \
  && rm -rf /var/lib/apt/lists/*
 
@@ -78,7 +81,7 @@ COPY [ "scripts/run-all.sh",       \
        "scripts/prepare/",         \
        "scripts/build/",           \
        "scripts/image/",           \
-  "$LFS/tools/" ]
+       "$LFS/tools/" ]
 # copy configuration
 COPY [ "config/kernel.config", "$LFS/tools/" ]
 
