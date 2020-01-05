@@ -100,7 +100,7 @@ EOF
 
 # 6.9.2.2. Adding time zone data
 mkdir /tmp/tzdata \
-  && tar -xf /sources/tzdata2017b.tar.gz -C /tmp/tzdata \
+  && tar -xf /sources/tzdata2018c.tar.gz -C /tmp/tzdata \
   && pushd /tmp/tzdata
 
 ZONEINFO=/usr/share/zoneinfo

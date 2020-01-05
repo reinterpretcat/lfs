@@ -6,7 +6,7 @@ echo "Required disk space: 74 MB"
 
 # 6.48. Libelf is a library for handling ELF (Executable and Linkable
 # Format) files.
-tar -xf /sources/elfutils-*.tar.xz -C /tmp/ \
+tar -xf /sources/elfutils-*.tar.bz2 -C /tmp/ \
   && mv /tmp/elfutils-* /tmp/elfutils \
   && pushd /tmp/elfutils
 # prepare for compilation
