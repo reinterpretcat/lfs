@@ -3,7 +3,7 @@ set -e
 echo "Start building bootable image.."
 
 pushd /tmp
-mkdir isolinux
+mkdir -p isolinux
 
 sh /tools/1.configure-syslinux.sh
 sh /tools/2.create-ramdisk.sh
