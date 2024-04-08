@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian:10-slim
 
 # image info
 LABEL description="Automated LFS build"
@@ -18,7 +18,7 @@ ENV MAKEFLAGS="-j 1"
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
 # 2 use github release artifacts
-ENV FETCH_TOOLCHAIN_MODE=1
+ENV FETCH_TOOLCHAIN_MODE=2
 
 # set 1 to run tests; running tests takes much more time
 ENV LFS_TEST=0
@@ -28,9 +28,6 @@ ENV LFS_DOCS=0
 
 # degree of parallelism for compilation
 ENV JOB_COUNT=1
-
-# loop device
-ENV LOOP=/dev/loop0
 
 # inital ram disk size in KB
 # must be in sync with CONFIG_BLK_DEV_RAM_SIZE
