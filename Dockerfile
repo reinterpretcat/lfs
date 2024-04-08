@@ -18,7 +18,7 @@ ENV MAKEFLAGS="-j 1"
 # 0 use LFS wget file
 # 1 use binaries from toolchain folder
 # 2 use github release artifacts
-ENV FETCH_TOOLCHAIN_MODE=1
+ENV FETCH_TOOLCHAIN_MODE=2
 
 # set 1 to run tests; running tests takes much more time
 ENV LFS_TEST=0

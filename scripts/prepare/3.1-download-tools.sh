@@ -28,6 +28,7 @@ case "$FETCH_TOOLCHAIN_MODE" in
     echo "Assume toolchain from host is already placed in sources folder"
     ;;
   "2")
+    echo "Downloading toolchain from github.."
     wget --timestamping https://github.com/numberformat/lfs/releases/download/v8.2.0/toolchain.tar.gz
     tar -xvf toolchain.tar.gz
     rm toolchain.tar.gz
