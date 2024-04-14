@@ -1,0 +1,2 @@
+FROM lfs_phase3:latest
+ENTRYPOINT [ "/bin/bash" ]

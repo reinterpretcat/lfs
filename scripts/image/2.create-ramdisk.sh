@@ -2,8 +2,14 @@
 set -e
 echo "Creating ramdisk.."
 
+# Get the first available loopback device
+LOOP=$(losetup -f)
+echo "Loop device: $LOOP"
+
 LOOP_DIR=$(pwd)/$LOOP
 RAMDISK=$(pwd)/ramdisk
+
+echo "Loop directory: $LOOP_DIR"
 
 # Create yet another loop device if not exist
 [ -e $LOOP ] || mknod $LOOP b 7 0
@@ -12,13 +18,19 @@ RAMDISK=$(pwd)/ramdisk
 dd if=/dev/zero of=$RAMDISK bs=1k count=$IMAGE_SIZE
 
 # plug off any virtual fs from loop device
-losetup -d $LOOP || true
+losetup -d $LOOP > /dev/null 2>&1 || true
+
+sync
 
 # associate it with ${LOOP}
+echo losetup $LOOP $RAMDISK
 losetup $LOOP $RAMDISK
+sync
 
 # make an ext2 filesystem
+echo mkfs.ext4 -q -m 0 $LOOP $IMAGE_SIZE
 mkfs.ext4 -q -m 0 $LOOP $IMAGE_SIZE
+sync
 
 # ensure loop2 directory
 [ -d $LOOP_DIR ] || mkdir -pv $LOOP_DIR

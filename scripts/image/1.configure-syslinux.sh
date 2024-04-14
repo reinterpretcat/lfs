@@ -4,7 +4,7 @@ echo "Configuring syslinux.."
 
 # extract syslinux
 tar -xf $LFS/sources/syslinux-*.tar.xz -C /tmp/
-mv /tmp/syslinux-* /tmp/syslinux
+mv -n /tmp/syslinux-* /tmp/syslinux
 
 # copy needed syslinux binaries
 cp /tmp/syslinux/bios/core/isolinux.bin isolinux/isolinux.bin

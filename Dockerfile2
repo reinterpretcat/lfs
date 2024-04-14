@@ -1,0 +1,16 @@
+FROM lfs_phase2:latest
+
+# LFS mount point
+ENV LFS=/mnt/lfs
+
+# inital ram disk size in KB
+# must be in sync with CONFIG_BLK_DEV_RAM_SIZE
+ENV IMAGE_SIZE=900000
+
+# location of initrd tree
+ENV INITRD_TREE=/mnt/lfs
+
+# output image
+ENV IMAGE=isolinux/ramdisk.img
+
+ENTRYPOINT [ "/tools/run-image.sh" ]
